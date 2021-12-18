@@ -18,6 +18,22 @@ class TestLeafNode:
 
 
 class TestInternalNode:
+    def test_extension(self):
+        V = ct.LeafNode
+        I = ct.InternalNode
+        i = I([V(10), I([V(5), V(3)])])  # (? 10 (? 5 3))
+        exp_extensions_sexps = [
+            "(? (? 10 (? 5 3)) 11)",
+            "(? 10 (? 5 3) 11)",
+            "(? (? 10 11) (? 5 3))",
+            "(? 10 (? (? 5 3) 11))",
+            "(? 10 (? 5 3 11))",
+            "(? 10 (? (? 5 11) 3))",
+            "(? 10 (? 5 (? 3 11)))",
+        ]
+        got_extension_sexps = [e.as_sexp() for e in i.all_extended(11)]
+        assert sorted(got_extension_sexps) == sorted(exp_extensions_sexps)
+
     def test_as_sexp(self):
         V = ct.LeafNode
         I = ct.InternalNode

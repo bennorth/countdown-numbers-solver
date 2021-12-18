@@ -17,6 +17,10 @@ class TestLeafNode:
         n = ct.LeafNode(23)
         assert n.with_opkind(ct.OpcodeKind.MultiplyN) == n
 
+    def test_with_values(self):
+        n = ct.LeafNode(2)
+        assert n.with_values([42, 99, 101, 33]) == ct.LeafNode(101)
+
     def test_as_sexp(self):
         assert ct.LeafNode(42).as_sexp() == "42"
 

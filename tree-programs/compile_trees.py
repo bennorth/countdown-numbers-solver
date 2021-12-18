@@ -20,6 +20,17 @@ class OpcodeKind(Enum):
     AddN = 2
     Return = 3
 
+    @staticmethod
+    def op_symbol(k):
+        if k is None:
+            return "?"
+        elif k == OpcodeKind.MultiplyN:
+            return "*"
+        elif k == OpcodeKind.AddN:
+            return "+"
+        else:
+            raise ValueError(f"no symbol for {k}")
+
 
 def replace_element(xs, i, x):
     xs_copy = xs[:]

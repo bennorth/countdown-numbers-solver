@@ -60,6 +60,17 @@ class TestInternalNode:
         i1 = i.with_values([99, 42, 101])
         assert i1.as_sexp() == "(* 42 (+ 99 101))"
 
+    def test_as_opcodes(self):
+        i = I([L(10), I([L(4), L(5), L(3)], K.MultiplyN)], K.AddN)
+        assert i.as_opcodes() == [
+            C(K.Value, 10),
+            C(K.Value, 4),
+            C(K.Value, 5),
+            C(K.Value, 3),
+            C(K.MultiplyN, 3),
+            C(K.AddN, 2),
+        ]
+
     def test_as_sexp(self):
         i = I([L(10), I([L(5), L(3)])])
         assert i.as_sexp() == "(? 10 (? 5 3))"

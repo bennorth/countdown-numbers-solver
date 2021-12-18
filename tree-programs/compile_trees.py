@@ -4,6 +4,7 @@ from typing import Optional, Union, List
 from functools import reduce
 from operator import concat
 from itertools import combinations
+import sys
 
 
 TreeNode = Union["LeafNode", "InternalNode"]
@@ -137,3 +138,8 @@ def all_programs(n_cards):
     program_u8s.append(Opcode(OpcodeKind.Return).as_uint8())
 
     return program_u8s
+
+
+if __name__ == "__main__":
+    n_cards = int(sys.argv[1])
+    sys.stdout.buffer.write(bytes(all_programs(n_cards)))

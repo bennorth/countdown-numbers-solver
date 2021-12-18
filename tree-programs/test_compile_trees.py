@@ -17,6 +17,14 @@ class TestLeafNode:
         assert ct.LeafNode(42).as_sexp() == "42"
 
 
+class TestInternalNode:
+    def test_as_sexp(self):
+        V = ct.LeafNode
+        I = ct.InternalNode
+        i = I([V(10), I([V(5), V(3)])])
+        assert i.as_sexp() == "(? 10 (? 5 3))"
+
+
 class TestHelpers:
     def test_replace_element(self):
         xs = [1, 5, 12, 10]

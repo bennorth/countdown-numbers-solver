@@ -149,3 +149,26 @@ class TestTopLevel:
         # Discrete Applied Mathematics 7 (1984) 191-199
         n_trees = [len(list(ct.all_trees(n))) for n in range(1, 8)]
         assert n_trees == [1, 1, 4, 26, 236, 2752, 39208]
+
+    def test_all_programs(self):
+        u8s = ct.all_programs(3)
+        # Truth worked out by printing programs then converting
+        # by hand.  A bit brittle because it relies on the order
+        # of generation of programs and of combinations.
+        assert u8s == [
+            # One-card programs:
+            0x00, 0x30,
+            0x01, 0x30,
+            0x02, 0x30,
+            # Two-card programs (Add only):
+            0x00, 0x01, 0x22, 0x30,
+            0x00, 0x02, 0x22, 0x30,
+            0x01, 0x02, 0x22, 0x30,
+            # Thee-card programs (Add-at-top only):
+            0x00, 0x01, 0x12, 0x02, 0x22, 0x30,
+            0x00, 0x01, 0x02, 0x23, 0x30,
+            0x00, 0x02, 0x12, 0x01, 0x22, 0x30,
+            0x00, 0x01, 0x02, 0x12, 0x22, 0x30,
+            # Terminator:
+            0x30
+        ]

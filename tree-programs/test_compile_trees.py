@@ -13,6 +13,10 @@ class TestLeafNode:
         n = V(23)
         assert list(n.all_extended(11)) == [I([V(23), V(11)])]
 
+    def test_with_opkind(self):
+        n = ct.LeafNode(23)
+        assert n.with_opkind(ct.OpcodeKind.MultiplyN) == n
+
     def test_as_sexp(self):
         assert ct.LeafNode(42).as_sexp() == "42"
 

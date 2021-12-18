@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from enum import Enum
 from typing import Optional, Union, List
+from functools import reduce
+from operator import concat
 
 
 TreeNode = Union["LeafNode", "InternalNode"]
@@ -84,6 +86,11 @@ class InternalNode:
             for ch in self.children
         ]
         return InternalNode(children_with_values, self.op_kind)
+
+    def as_opcodes(self):
+        children_opcodes = [ch.as_opcodes() for ch in self.children]
+        own_opcodes = [Opcode(self.op_kind, len(self.children))]
+        return reduce(concat, children_opcodes, []) + own_opcodes
 
     def as_sexp(self):
         sym = OpcodeKind.op_symbol(self.op_kind)

@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+from typing import Optional
 import pytest
 import compile_trees as ct
 
@@ -84,6 +86,19 @@ class TestHelpers:
             K.other(K.Value)
         with pytest.raises(ValueError):
             K.other(K.Return)
+
+
+@dataclass
+class EncodingTestSpec:
+    kind: K
+    arg: Optional[int]
+    exp_u8: int
+
+    @property
+    def label(self):
+        tag = self.kind.name[0]
+        sfx = str(self.arg) if self.arg else ""
+        return tag + sfx
 
 
 class TestTopLevel:

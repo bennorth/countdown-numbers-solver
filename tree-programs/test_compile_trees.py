@@ -5,6 +5,7 @@ import compile_trees as ct
 L = ct.LeafNode
 I = ct.InternalNode
 K = ct.OpcodeKind
+C = ct.Opcode
 
 
 class TestLeafNode:

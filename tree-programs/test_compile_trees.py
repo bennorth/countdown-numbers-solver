@@ -9,32 +9,28 @@ K = ct.OpcodeKind
 
 class TestLeafNode:
     def test_creation(self):
-        n = ct.LeafNode(23)
+        n = L(23)
         assert n.value == 23
 
     def test_extension(self):
-        V = ct.LeafNode
-        I = ct.InternalNode
-        n = V(23)
-        assert list(n.all_extended(11)) == [I([V(23), V(11)])]
+        n = L(23)
+        assert list(n.all_extended(11)) == [I([L(23), L(11)])]
 
     def test_with_opkind(self):
-        n = ct.LeafNode(23)
-        assert n.with_opkind(ct.OpcodeKind.MultiplyN) == n
+        n = L(23)
+        assert n.with_opkind(K.MultiplyN) == n
 
     def test_with_values(self):
-        n = ct.LeafNode(2)
-        assert n.with_values([42, 99, 101, 33]) == ct.LeafNode(101)
+        n = L(2)
+        assert n.with_values([42, 99, 101, 33]) == L(101)
 
     def test_as_sexp(self):
-        assert ct.LeafNode(42).as_sexp() == "42"
+        assert L(42).as_sexp() == "42"
 
 
 class TestInternalNode:
     def test_extension(self):
-        V = ct.LeafNode
-        I = ct.InternalNode
-        i = I([V(10), I([V(5), V(3)])])  # (? 10 (? 5 3))
+        i = I([L(10), I([L(5), L(3)])])  # (? 10 (? 5 3))
         exp_extensions_sexps = [
             "(? (? 10 (? 5 3)) 11)",
             "(? 10 (? 5 3) 11)",
@@ -48,24 +44,17 @@ class TestInternalNode:
         assert sorted(got_extension_sexps) == sorted(exp_extensions_sexps)
 
     def test_with_opkind(self):
-        V = ct.LeafNode
-        I = ct.InternalNode
-        K = ct.OpcodeKind
-        i = I([V(10), I([V(5), V(3)])])  # (? 10 (? 5 3))
-        i1 = i.with_opkind(ct.OpcodeKind.MultiplyN)
+        i = I([L(10), I([L(5), L(3)])])  # (? 10 (? 5 3))
+        i1 = i.with_opkind(K.MultiplyN)
         assert i1.as_sexp() == "(* 10 (+ 5 3))"
 
     def test_with_values(self):
-        V = ct.LeafNode
-        I = ct.InternalNode
-        i = I([V(1), I([V(0), V(2)])]).with_opkind(ct.OpcodeKind.MultiplyN)
+        i = I([L(1), I([L(0), L(2)])]).with_opkind(K.MultiplyN)
         i1 = i.with_values([99, 42, 101])
         assert i1.as_sexp() == "(* 42 (+ 99 101))"
 
     def test_as_sexp(self):
-        V = ct.LeafNode
-        I = ct.InternalNode
-        i = I([V(10), I([V(5), V(3)])])
+        i = I([L(10), I([L(5), L(3)])])
         assert i.as_sexp() == "(? 10 (? 5 3))"
 
 
@@ -77,7 +66,6 @@ class TestHelpers:
         assert ys == [1, 66, 12, 10]
 
     def test_op_symbol(self):
-        K = ct.OpcodeKind
         assert K.op_symbol(None) == "?"
         assert K.op_symbol(K.MultiplyN) == "*"
         assert K.op_symbol(K.AddN) == "+"
@@ -87,7 +75,6 @@ class TestHelpers:
             K.op_symbol(K.Return)
 
     def test_op_other(self):
-        K = ct.OpcodeKind
         assert K.other(K.MultiplyN) == K.AddN
         assert K.other(K.AddN) == K.MultiplyN
         with pytest.raises(ValueError):

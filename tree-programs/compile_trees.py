@@ -8,6 +8,11 @@ from operator import concat
 TreeNode = Union["LeafNode", "InternalNode"]
 
 
+class WithAsProgram:
+    def as_program(self):
+        return self.as_opcodes() + [Opcode(OpcodeKind.Return)]
+
+
 @dataclass
 class LeafNode:
     value: int

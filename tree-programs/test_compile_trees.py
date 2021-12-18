@@ -2,6 +2,11 @@ import pytest
 import compile_trees as ct
 
 
+L = ct.LeafNode
+I = ct.InternalNode
+K = ct.OpcodeKind
+
+
 class TestLeafNode:
     def test_creation(self):
         n = ct.LeafNode(23)

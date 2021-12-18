@@ -19,6 +19,9 @@ class LeafNode:
     def with_values(self, values):
         return LeafNode(values[self.value])
 
+    def as_opcodes(self):
+        return [Opcode(OpcodeKind.Value, self.value)]
+
     def as_sexp(self):
         return str(self.value)
 

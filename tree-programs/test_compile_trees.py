@@ -101,6 +101,22 @@ class EncodingTestSpec:
         return tag + sfx
 
 
+class TestOpcode:
+    @pytest.mark.parametrize(
+        "spec",
+        [
+            EncodingTestSpec(K.MultiplyN, 3, 0x13),
+            EncodingTestSpec(K.AddN, 4, 0x24),
+            EncodingTestSpec(K.Value, 5, 0x05),
+            EncodingTestSpec(K.Return, None, 0x30),
+        ],
+        ids=(lambda s: s.label)
+    )
+    def test_encoding(self, spec):
+        c = C(spec.kind, spec.arg)
+        assert c.as_uint8() == spec.exp_u8
+
+
 class TestTopLevel:
     def test_all_trees(self):
         # True values taken from

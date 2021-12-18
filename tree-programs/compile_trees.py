@@ -3,6 +3,7 @@ from enum import Enum
 from typing import Optional, Union, List
 from functools import reduce
 from operator import concat
+from itertools import combinations
 
 
 TreeNode = Union["LeafNode", "InternalNode"]
@@ -119,3 +120,20 @@ class Opcode:
 
     def as_uint8(self):
         return (self.kind.value << 4) + (self.arg or 0)
+
+
+def all_programs(n_cards):
+    value_indexes = list(range(n_cards))
+
+    program_u8s = []
+    for n_used in range(1, n_cards + 1):
+        for t in all_trees(n_used):
+            t1 = t.with_opkind(OpcodeKind.AddN)
+            for used_values in combinations(value_indexes, n_used):
+                t2 = t1.with_values(used_values)
+                for i in t2.as_program():
+                    program_u8s.append(i.as_uint8())
+
+    program_u8s.append(Opcode(OpcodeKind.Return).as_uint8())
+
+    return program_u8s

@@ -50,6 +50,13 @@ class TestInternalNode:
         i1 = i.with_opkind(ct.OpcodeKind.MultiplyN)
         assert i1.as_sexp() == "(* 10 (+ 5 3))"
 
+    def test_with_values(self):
+        V = ct.LeafNode
+        I = ct.InternalNode
+        i = I([V(1), I([V(0), V(2)])]).with_opkind(ct.OpcodeKind.MultiplyN)
+        i1 = i.with_values([99, 42, 101])
+        assert i1.as_sexp() == "(* 42 (+ 99 101))"
+
     def test_as_sexp(self):
         V = ct.LeafNode
         I = ct.InternalNode

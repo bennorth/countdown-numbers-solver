@@ -13,6 +13,9 @@ class TestLeafNode:
         n = V(23)
         assert list(n.all_extended(11)) == [I([V(23), V(11)])]
 
+    def test_as_sexp(self):
+        assert ct.LeafNode(42).as_sexp() == "42"
+
 
 class TestHelpers:
     def test_replace_element(self):

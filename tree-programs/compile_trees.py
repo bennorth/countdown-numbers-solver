@@ -10,6 +10,9 @@ TreeNode = Union["LeafNode", "InternalNode"]
 class LeafNode:
     value: int
 
+    def all_extended(self, value):
+        yield InternalNode([self, LeafNode(value)])
+
 
 class OpcodeKind(Enum):
     Value = 0

@@ -38,6 +38,14 @@ class TestInternalNode:
         got_extension_sexps = [e.as_sexp() for e in i.all_extended(11)]
         assert sorted(got_extension_sexps) == sorted(exp_extensions_sexps)
 
+    def test_with_opkind(self):
+        V = ct.LeafNode
+        I = ct.InternalNode
+        K = ct.OpcodeKind
+        i = I([V(10), I([V(5), V(3)])])  # (? 10 (? 5 3))
+        i1 = i.with_opkind(ct.OpcodeKind.MultiplyN)
+        assert i1.as_sexp() == "(* 10 (+ 5 3))"
+
     def test_as_sexp(self):
         V = ct.LeafNode
         I = ct.InternalNode

@@ -13,6 +13,9 @@ class LeafNode:
     def all_extended(self, value):
         yield InternalNode([self, LeafNode(value)])
 
+    def as_sexp(self):
+        return str(self.value)
+
 
 class OpcodeKind(Enum):
     Value = 0

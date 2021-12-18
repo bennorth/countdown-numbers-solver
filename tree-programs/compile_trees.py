@@ -95,3 +95,9 @@ def all_trees(n_leaves):
         for t in all_trees(n_leaves - 1):
             for t1 in t.all_extended(n_leaves - 1):
                 yield t1
+
+
+@dataclass
+class Opcode:
+    kind: OpcodeKind
+    arg: Optional[int] = None

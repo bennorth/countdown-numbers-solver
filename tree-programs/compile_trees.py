@@ -16,6 +16,9 @@ class LeafNode:
     def with_opkind(self, k):
         return self
 
+    def with_values(self, values):
+        return LeafNode(values[self.value])
+
     def as_sexp(self):
         return str(self.value)
 

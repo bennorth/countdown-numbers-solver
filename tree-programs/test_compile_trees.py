@@ -20,3 +20,13 @@ class TestHelpers:
         ys = ct.replace_element(xs, 1, 66)
         assert xs == [1, 5, 12, 10]
         assert ys == [1, 66, 12, 10]
+
+    def test_op_symbol(self):
+        K = ct.OpcodeKind
+        assert K.op_symbol(None) == "?"
+        assert K.op_symbol(K.MultiplyN) == "*"
+        assert K.op_symbol(K.AddN) == "+"
+        with pytest.raises(ValueError):
+            K.op_symbol(K.Value)
+        with pytest.raises(ValueError):
+            K.op_symbol(K.Return)

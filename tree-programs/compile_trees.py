@@ -14,7 +14,7 @@ class WithAsProgram:
 
 
 @dataclass
-class LeafNode:
+class LeafNode(WithAsProgram):
     value: int
 
     def all_extended(self, value):
@@ -67,7 +67,7 @@ def replace_element(xs, i, x):
 
 
 @dataclass
-class InternalNode:
+class InternalNode(WithAsProgram):
     children: List[TreeNode]
     op_kind: Optional[OpcodeKind] = None
 

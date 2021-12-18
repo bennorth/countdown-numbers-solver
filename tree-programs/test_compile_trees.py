@@ -64,8 +64,10 @@ class TestInternalNode:
         i1 = i.with_values([99, 42, 101])
         assert i1.as_sexp() == "(* 42 (+ 99 101))"
 
-    def test_as_opcodes(self):
+    @pytest.mark.parametrize("method_name", ["as_opcodes", "as_program"])
+    def test_as_opcodes_as_program(self, method_name):
         i = I([L(10), I([L(4), L(5), L(3)], K.MultiplyN)], K.AddN)
+        method = getattr(i, method_name)
         exp_opcodes = (
             [
                 C(K.Value, 10),
@@ -75,8 +77,9 @@ class TestInternalNode:
                 C(K.MultiplyN, 3),
                 C(K.AddN, 2),
             ]
+            + ([C(K.Return)] if method_name == "as_program" else [])
         )
-        assert i.as_opcodes() == exp_opcodes
+        assert method() == exp_opcodes
 
     def test_as_sexp(self):
         i = I([L(10), I([L(5), L(3)])])

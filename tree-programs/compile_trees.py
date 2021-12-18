@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from enum import Enum
-from typing import Union
+from typing import Optional, Union, List
 
 
 TreeNode = Union["LeafNode", "InternalNode"]
@@ -16,3 +16,9 @@ class OpcodeKind(Enum):
     MultiplyN = 1
     AddN = 2
     Return = 3
+
+
+@dataclass
+class InternalNode:
+    children: List[TreeNode]
+    op_kind: Optional[OpcodeKind] = None

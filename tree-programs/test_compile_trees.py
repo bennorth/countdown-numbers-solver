@@ -58,6 +58,17 @@ class TestHelpers:
         with pytest.raises(ValueError):
             K.op_symbol(K.Return)
 
+    def test_op_other(self):
+        K = ct.OpcodeKind
+        assert K.other(K.MultiplyN) == K.AddN
+        assert K.other(K.AddN) == K.MultiplyN
+        with pytest.raises(ValueError):
+            K.other(None)
+        with pytest.raises(ValueError):
+            K.other(K.Value)
+        with pytest.raises(ValueError):
+            K.other(K.Return)
+
 
 class TestTopLevel:
     def test_all_trees(self):

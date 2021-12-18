@@ -13,6 +13,9 @@ class LeafNode:
     def all_extended(self, value):
         yield InternalNode([self, LeafNode(value)])
 
+    def with_opkind(self, k):
+        return self
+
     def as_sexp(self):
         return str(self.value)
 

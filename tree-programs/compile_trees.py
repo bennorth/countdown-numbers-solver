@@ -34,6 +34,15 @@ class OpcodeKind(Enum):
         else:
             raise ValueError(f"no symbol for {k}")
 
+    @staticmethod
+    def other(k):
+        if k == OpcodeKind.MultiplyN:
+            return OpcodeKind.AddN
+        elif k == OpcodeKind.AddN:
+            return OpcodeKind.MultiplyN
+        else:
+            raise ValueError(f"no other for {k}")
+
 
 def replace_element(xs, i, x):
     xs_copy = xs[:]

@@ -31,3 +31,10 @@ def replace_element(xs, i, x):
 class InternalNode:
     children: List[TreeNode]
     op_kind: Optional[OpcodeKind] = None
+
+    def all_extended(self, value):
+        yield InternalNode([self, LeafNode(value)])
+        yield InternalNode(self.children + [LeafNode(value)])
+        for idx, child in enumerate(self.children):
+            for t in child.all_extended(value):
+                yield InternalNode(replace_element(self.children, idx, t))

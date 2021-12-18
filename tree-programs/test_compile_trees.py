@@ -31,6 +31,10 @@ class TestLeafNode:
         n = L(42)
         assert n.as_opcodes() == [C(K.Value, 42)]
 
+    def test_as_program(self):
+        n = L(42)
+        assert n.as_program() == [C(K.Value, 42), C(K.Return)]
+
     def test_as_sexp(self):
         assert L(42).as_sexp() == "42"
 

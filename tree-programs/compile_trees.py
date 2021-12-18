@@ -57,3 +57,12 @@ class InternalNode:
         sym = OpcodeKind.op_symbol(self.op_kind)
         children = " ".join(ch.as_sexp() for ch in self.children)
         return f"({sym} {children})"
+
+
+def all_trees(n_leaves):
+    if n_leaves == 1:
+        yield LeafNode(0)
+    else:
+        for t in all_trees(n_leaves - 1):
+            for t1 in t.all_extended(n_leaves - 1):
+                yield t1

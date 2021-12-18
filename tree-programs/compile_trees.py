@@ -101,3 +101,6 @@ def all_trees(n_leaves):
 class Opcode:
     kind: OpcodeKind
     arg: Optional[int] = None
+
+    def as_uint8(self):
+        return (self.kind.value << 4) + (self.arg or 0)

@@ -66,14 +66,17 @@ class TestInternalNode:
 
     def test_as_opcodes(self):
         i = I([L(10), I([L(4), L(5), L(3)], K.MultiplyN)], K.AddN)
-        assert i.as_opcodes() == [
-            C(K.Value, 10),
-            C(K.Value, 4),
-            C(K.Value, 5),
-            C(K.Value, 3),
-            C(K.MultiplyN, 3),
-            C(K.AddN, 2),
-        ]
+        exp_opcodes = (
+            [
+                C(K.Value, 10),
+                C(K.Value, 4),
+                C(K.Value, 5),
+                C(K.Value, 3),
+                C(K.MultiplyN, 3),
+                C(K.AddN, 2),
+            ]
+        )
+        assert i.as_opcodes() == exp_opcodes
 
     def test_as_sexp(self):
         i = I([L(10), I([L(5), L(3)])])

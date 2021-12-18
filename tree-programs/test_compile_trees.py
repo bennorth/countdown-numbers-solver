@@ -57,3 +57,12 @@ class TestHelpers:
             K.op_symbol(K.Value)
         with pytest.raises(ValueError):
             K.op_symbol(K.Return)
+
+
+class TestTopLevel:
+    def test_all_trees(self):
+        # True values taken from
+        # Counting dendrograms: a survey, Fionn Murtagh
+        # Discrete Applied Mathematics 7 (1984) 191-199
+        n_trees = [len(list(ct.all_trees(n))) for n in range(1, 8)]
+        assert n_trees == [1, 1, 4, 26, 236, 2752, 39208]

@@ -52,3 +52,8 @@ class InternalNode:
         for idx, child in enumerate(self.children):
             for t in child.all_extended(value):
                 yield InternalNode(replace_element(self.children, idx, t))
+
+    def as_sexp(self):
+        sym = OpcodeKind.op_symbol(self.op_kind)
+        children = " ".join(ch.as_sexp() for ch in self.children)
+        return f"({sym} {children})"

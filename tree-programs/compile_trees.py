@@ -75,6 +75,13 @@ class InternalNode:
         ]
         return InternalNode(children_with_other, k)
 
+    def with_values(self, values):
+        children_with_values = [
+            ch.with_values(values)
+            for ch in self.children
+        ]
+        return InternalNode(children_with_values, self.op_kind)
+
     def as_sexp(self):
         sym = OpcodeKind.op_symbol(self.op_kind)
         children = " ".join(ch.as_sexp() for ch in self.children)

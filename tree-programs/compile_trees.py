@@ -1,5 +1,9 @@
 from dataclasses import dataclass
 from enum import Enum
+from typing import Union
+
+
+TreeNode = Union["LeafNode", "InternalNode"]
 
 
 @dataclass

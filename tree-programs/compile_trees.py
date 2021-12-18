@@ -21,6 +21,12 @@ class OpcodeKind(Enum):
     Return = 3
 
 
+def replace_element(xs, i, x):
+    xs_copy = xs[:]
+    xs_copy[i] = x
+    return xs_copy
+
+
 @dataclass
 class InternalNode:
     children: List[TreeNode]

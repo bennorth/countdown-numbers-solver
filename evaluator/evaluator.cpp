@@ -62,4 +62,37 @@ const Opcode * all_programs()
 
 bool Evaluator::all_valid()
 {
+  auto program_finished{false};
+  while (!program_finished)
+  {
+    Opcode instruction{*instructions++};
+
+    switch (instruction.kind)
+    {
+    case OpcodeKind::Value:
+      operands.push_back(cards[instruction.arg0]);
+      concrete_instructions.push_back(instruction);
+      break;
+
+    case OpcodeKind::MultiplyN:
+    case OpcodeKind::AddN:
+      // TODO
+      break;
+
+    case OpcodeKind::Return:
+      concrete_instructions.push_back(instruction);
+      output(*this);
+      program_finished = true;
+      break;
+
+    default:
+      return false;
+    }
+  }
+
+  // Get ready for next program (if there is one).
+  clear();
+
+  // Return value indicates whether there's a double-Return.
+  return (instructions->kind != OpcodeKind::Return);
 }

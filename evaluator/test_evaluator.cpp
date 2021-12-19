@@ -27,4 +27,28 @@ TEST_CASE("Program expansion", "")
     REQUIRE(opcode->kind == OpcodeKind::AddN);
     REQUIRE(opcode->arg0 == 3);
   }
+
+  SECTION("All arg1 zero")
+  {
+    int n_returns = 0;
+    int n_non_zero_arg1 = 0;
+    const Opcode * opcode = all_programs();
+
+    while (n_returns != 2) {
+      if (opcode->arg1 != 0)
+        ++n_non_zero_arg1;
+
+      if (opcode->kind == OpcodeKind::Return)
+        ++n_returns;
+      else
+        n_returns = 0;
+
+      ++opcode;
+    }
+
+    REQUIRE(n_non_zero_arg1 == 0);
+
+    size_t n_expanded_opcodes = opcode - all_programs();
+    REQUIRE(n_expanded_opcodes == n_packed_opcodes() * 2 - 1);
+  }
 }

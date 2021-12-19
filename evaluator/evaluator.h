@@ -28,3 +28,4 @@ struct __attribute__ ((packed)) Opcode {
 
 const uint8_t * all_packed_programs();
 size_t n_packed_opcodes();
+const Opcode * all_programs();

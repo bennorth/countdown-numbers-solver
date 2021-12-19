@@ -17,3 +17,42 @@ size_t n_packed_opcodes()
 {
   return programs_6_cards_bin_len;
 }
+
+const Opcode * all_programs()
+{
+  static Opcode * programs{([]()
+    {
+      Opcode * opcode = &(all_programs_[0]);
+
+      for (
+        const uint8_t * packed_opcode = programs_6_cards_bin;
+        packed_opcode != programs_6_cards_bin_end;
+        ++packed_opcode
+      ) {
+        *opcode++ = {
+          static_cast<OpcodeKind>(*packed_opcode >> 4),
+          static_cast<uint8_t>(*packed_opcode & 0x0f),
+          0
+        };
+      }
+
+      // Prepare to overwrite second Return:
+      --opcode;
+
+      for (
+        const uint8_t * packed_opcode = programs_6_cards_bin;
+        packed_opcode != programs_6_cards_bin_end;
+        ++packed_opcode
+      ) {
+        *opcode++ = {
+          other_binop(static_cast<OpcodeKind>(*packed_opcode >> 4)),
+          static_cast<uint8_t>(*packed_opcode & 0x0f),
+          0
+        };
+      }
+
+      return &(all_programs_[0]);
+    })()};
+
+  return programs;
+}

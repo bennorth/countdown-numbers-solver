@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <cstddef>
+#include <functional>
 #include <boost/container/small_vector.hpp>
 
 template<typename T> using small_vector = boost::container::small_vector<T, 12>;
@@ -50,4 +51,15 @@ template<> struct operator_traits<OpcodeKind::AddN> {
   static bool operand_is_valid(int x) { return true; }
   static bool operation_is_valid(int noninv, int inv) { return noninv > inv; }
   static int result(int noninv, int inv) { return noninv - inv; }
+};
+
+
+struct Evaluator {
+  using output_function_t = std::function<void(const Evaluator &)>;
+
+  small_vector<int> operands;
+  const Opcode * instructions;
+  const int * cards;
+  const output_function_t & output;
+  small_vector<Opcode> concrete_instructions;
 };

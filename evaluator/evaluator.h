@@ -86,5 +86,45 @@ struct Evaluator {
   // Return value is "do more programs follow the one just executed"?
   bool all_valid();
 
+  template<OpcodeKind OpKind>
+  void all_valid(uint8_t n_args, unsigned non_inv_mask);
+
   int value() const { return operands.back(); }
 };
+
+
+template<OpcodeKind Kind>
+void Evaluator::all_valid(uint8_t n_args, unsigned non_inv_mask)
+{
+  using op_traits = operator_traits<Kind>;
+  int inverting_input{op_traits::identity};
+  int non_inverting_input{op_traits::identity};
+
+  unsigned mask{1};
+  for (int i = 0; i != n_args; ++i, mask <<= 1) {
+    const int value = operands.back();
+    operands.pop_back();
+
+    if (!op_traits::operand_is_valid(value))
+      return;
+
+    int & accumulator{
+      (non_inv_mask & mask) ? non_inverting_input : inverting_input
+    };
+
+    op_traits::accumulate(accumulator, value);
+  }
+
+  if (op_traits::operation_is_valid(non_inverting_input, inverting_input))
+  {
+    operands.push_back(
+      op_traits::result(non_inverting_input, inverting_input)
+    );
+
+    concrete_instructions.push_back(
+      { Kind, n_args, static_cast<uint8_t>(non_inv_mask) }
+    );
+
+    all_valid();
+  }
+}

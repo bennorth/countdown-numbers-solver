@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <cstddef>
 
 
 enum class OpcodeKind : uint8_t {
@@ -24,3 +25,6 @@ struct __attribute__ ((packed)) Opcode {
   uint8_t arg0;  // Card-index for Value; n.operands for MultiplyN/AddN
   uint8_t arg1;  // Non-inverted input mask for MultiplyN/AddN
 };
+
+const uint8_t * all_packed_programs();
+size_t n_packed_opcodes();

@@ -1,6 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
 
+#include <array>
 #include "evaluator.h"
 
 TEST_CASE("OpcodeKind manipulation", "")
@@ -82,4 +83,33 @@ TEST_CASE("Operator traits", "")
     add_traits::accumulate(x, 10);
     REQUIRE(x == 52);
   }
+}
+
+TEST_CASE("Operator-free programs", "")
+{
+  std::vector<Opcode> programs{
+    { OpcodeKind::Value, 0, 0 },
+    { OpcodeKind::Return, 0, 0 },
+    { OpcodeKind::Value, 2, 0 },
+    { OpcodeKind::Return, 0, 0 },
+    { OpcodeKind::Return, 0, 0 },
+  };
+
+  std::vector<int> cards{42, 33, 99, 100, 101, 12};
+  int value{};
+  Evaluator::output_function_t store_value{
+    [&value](const Evaluator & e) { value = e.value(); }
+  };
+
+  Evaluator evaluator{programs.data(), cards.data(), store_value};
+
+  const auto more_follow_1 = evaluator.all_valid();
+  REQUIRE(more_follow_1);
+  REQUIRE(value == 42);
+  REQUIRE(evaluator.is_clear());
+
+  const auto more_follow_2 = evaluator.all_valid();
+  REQUIRE( ! more_follow_2);
+  REQUIRE(value == 99);
+  REQUIRE(evaluator.is_clear());
 }

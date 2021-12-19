@@ -82,4 +82,7 @@ struct Evaluator {
     operands.clear();
     concrete_instructions.clear();
   }
+
+  // Return value is "do more programs follow the one just executed"?
+  bool all_valid();
 };

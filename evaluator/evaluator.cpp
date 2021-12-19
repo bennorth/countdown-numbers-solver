@@ -56,3 +56,10 @@ const Opcode * all_programs()
 
   return programs;
 }
+
+
+////////////////////////////////////////////////////////////////////////
+
+bool Evaluator::all_valid()
+{
+}

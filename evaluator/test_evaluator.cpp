@@ -52,3 +52,34 @@ TEST_CASE("Program expansion", "")
     REQUIRE(n_expanded_opcodes == n_packed_opcodes() * 2 - 1);
   }
 }
+
+TEST_CASE("Operator traits", "")
+{
+  SECTION("Multiplication")
+  {
+    using multiply_traits = operator_traits<OpcodeKind::MultiplyN>;
+    REQUIRE(multiply_traits::operand_is_valid(42));
+    REQUIRE( ! multiply_traits::operand_is_valid(1));
+    REQUIRE(multiply_traits::operation_is_valid(60, 5));
+    REQUIRE( ! multiply_traits::operation_is_valid(60, 7));
+    REQUIRE(multiply_traits::result(60, 5) == 12);
+
+    int x = 42;
+    multiply_traits::accumulate(x, 10);
+    REQUIRE(x == 420);
+  }
+
+  SECTION("Add")
+  {
+    using add_traits = operator_traits<OpcodeKind::AddN>;
+    REQUIRE(add_traits::operand_is_valid(42));
+    REQUIRE(add_traits::operand_is_valid(1));
+    REQUIRE(add_traits::operation_is_valid(60, 5));
+    REQUIRE( ! add_traits::operation_is_valid(60, 67));
+    REQUIRE(add_traits::result(60, 5) == 55);
+
+    int x = 42;
+    add_traits::accumulate(x, 10);
+    REQUIRE(x == 52);
+  }
+}

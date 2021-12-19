@@ -10,3 +10,7 @@ TEST_CASE("OpcodeKind manipulation", "")
   REQUIRE(other_binop(OpcodeKind::AddN) == OpcodeKind::MultiplyN);
   REQUIRE(other_binop(OpcodeKind::Return) == OpcodeKind::Return);
 }
+
+TEST_CASE("Program expansion", "")
+{
+}

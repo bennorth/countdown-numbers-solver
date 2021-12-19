@@ -62,4 +62,18 @@ struct Evaluator {
   const int * cards;
   const output_function_t & output;
   small_vector<Opcode> concrete_instructions;
+
+  Evaluator(const Opcode * instructions, const int * cards, const output_function_t & output)
+    : instructions(instructions)
+    , cards(cards)
+    , output(output)
+  {}
+
+  Evaluator(const Evaluator & rhs)
+    : operands(rhs.operands)
+    , instructions(rhs.instructions)
+    , cards(rhs.cards)
+    , output(rhs.output)
+    , concrete_instructions(rhs.concrete_instructions)
+  {}
 };

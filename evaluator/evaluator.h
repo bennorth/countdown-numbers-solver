@@ -29,3 +29,22 @@ struct __attribute__ ((packed)) Opcode {
 const uint8_t * all_packed_programs();
 size_t n_packed_opcodes();
 const Opcode * all_programs();
+
+
+template<OpcodeKind Kind> struct operator_traits {};
+
+template<> struct operator_traits<OpcodeKind::MultiplyN> {
+  static const int identity = 1;
+  static void accumulate(int & x, int a) { x *= a; }
+  static bool operand_is_valid(int x) { return x != 1; }
+  static bool operation_is_valid(int noninv, int inv) { return (noninv % inv) == 0; }
+  static int result(int noninv, int inv) { return noninv / inv; }
+};
+
+template<> struct operator_traits<OpcodeKind::AddN> {
+  static const int identity = 0;
+  static void accumulate(int & x, int a) { x += a; }
+  static bool operand_is_valid(int x) { return true; }
+  static bool operation_is_valid(int noninv, int inv) { return noninv > inv; }
+  static int result(int noninv, int inv) { return noninv - inv; }
+};

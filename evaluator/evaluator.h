@@ -7,3 +7,14 @@ enum class OpcodeKind : uint8_t {
   AddN = 2,
   Return = 3
 };
+
+inline OpcodeKind other_binop(OpcodeKind k) {
+  switch (k) {
+  case OpcodeKind::MultiplyN:
+    return OpcodeKind::AddN;
+  case OpcodeKind::AddN:
+    return OpcodeKind::MultiplyN;
+  default:
+    return k;
+  }
+}

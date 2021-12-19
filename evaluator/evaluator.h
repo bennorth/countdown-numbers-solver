@@ -18,3 +18,9 @@ inline OpcodeKind other_binop(OpcodeKind k) {
     return k;
   }
 }
+
+struct __attribute__ ((packed)) Opcode {
+  OpcodeKind kind;
+  uint8_t arg0;  // Card-index for Value; n.operands for MultiplyN/AddN
+  uint8_t arg1;  // Non-inverted input mask for MultiplyN/AddN
+};

@@ -25,3 +25,5 @@ xxd -i $PROGRAMS_BIN \
     | tail -n 1 \
     | sed 's/unsigned int/static const size_t/' \
     >> $PROGRAMS_H
+
+g++ -o test_evaluator programs-6-cards.cpp evaluator.cpp test_evaluator.cpp

@@ -1,5 +1,8 @@
 #include <cstdint>
 #include <cstddef>
+#include <boost/container/small_vector.hpp>
+
+template<typename T> using small_vector = boost::container::small_vector<T, 12>;
 
 
 enum class OpcodeKind : uint8_t {

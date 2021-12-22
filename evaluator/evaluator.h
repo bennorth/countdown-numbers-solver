@@ -76,4 +76,10 @@ struct Evaluator {
     , output(rhs.output)
     , concrete_instructions(rhs.concrete_instructions)
   {}
+
+  void clear()
+  {
+    operands.clear();
+    concrete_instructions.clear();
+  }
 };

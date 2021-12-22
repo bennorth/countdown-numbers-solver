@@ -86,6 +86,8 @@ struct Evaluator {
   // Return value is "do more programs follow the one just executed"?
   bool all_valid();
 
+  void all_valid(Opcode instruction, unsigned non_inv_mask);
+
   template<OpcodeKind OpKind>
   void all_valid(uint8_t n_args, unsigned non_inv_mask);
 

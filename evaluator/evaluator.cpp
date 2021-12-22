@@ -96,3 +96,20 @@ bool Evaluator::all_valid()
   // Return value indicates whether there's a double-Return.
   return (instructions->kind != OpcodeKind::Return);
 }
+
+void Evaluator::all_valid(Opcode instruction, unsigned non_inv_mask) {
+  switch (instruction.kind)
+  {
+  case OpcodeKind::MultiplyN:
+    all_valid<OpcodeKind::MultiplyN>(instruction.arg0, non_inv_mask);
+    break;
+
+  case OpcodeKind::AddN:
+    all_valid<OpcodeKind::AddN>(instruction.arg0, non_inv_mask);
+    break;
+
+  default:
+    // Error.
+    break;
+  }
+}

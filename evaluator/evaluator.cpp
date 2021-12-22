@@ -113,3 +113,11 @@ void Evaluator::all_valid(Opcode instruction, unsigned non_inv_mask) {
     break;
   }
 }
+
+bool Evaluator::is_clear() const
+{
+  return (
+    (operands.size() == 0)
+    && (concrete_instructions.size() == 0)
+  );
+}

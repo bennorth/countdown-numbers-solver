@@ -83,6 +83,9 @@ struct Evaluator {
     concrete_instructions.clear();
   }
 
+  // For use in tests:
+  bool is_clear() const;
+
   // Return value is "do more programs follow the one just executed"?
   bool all_valid();
 

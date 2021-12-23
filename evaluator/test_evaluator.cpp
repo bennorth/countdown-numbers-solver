@@ -113,3 +113,72 @@ TEST_CASE("Operator-free programs", "")
   REQUIRE(value == 99);
   REQUIRE(evaluator.is_clear());
 }
+
+TEST_CASE("Generate add/multiply inversions", "")
+{
+  std::vector<Opcode> programs{
+    { OpcodeKind::Value, 0, 0 },
+    { OpcodeKind::Value, 1, 0 },
+    { OpcodeKind::Value, 2, 0 },
+    { OpcodeKind::Value, 3, 0 },
+    { OpcodeKind::AddN, 4, 0 },
+    { OpcodeKind::Value, 4, 0 },
+    { OpcodeKind::MultiplyN, 2, 0 },
+    { OpcodeKind::Return, 0, 0 },
+    { OpcodeKind::Return, 0, 0 },
+  };
+
+  std::vector<int> cards{1, 2, 4, 8, 3, 200};
+
+  std::vector<int> values{};
+
+  Evaluator::output_function_t gather_value{
+    [&values](const Evaluator & e)
+    {
+      values.push_back(e.value());
+    }
+  };
+
+  Evaluator evaluator{programs.data(), cards.data(), gather_value};
+
+  const auto more_follow = evaluator.all_valid();
+  REQUIRE( ! more_follow);
+  REQUIRE(evaluator.is_clear());
+
+  // Stack will be
+  //
+  //     1 2 4 8  (with 8 on top)
+  //
+  // Inversions tried will be, in order,
+  //
+  //     - - - +  -1 -2 -4  8  =  1
+  //     - - + -  -1 -2  4 -8
+  //     - - + +  -1 -2  4  8  =  9
+  //     - + - -  -1  2 -4 -8
+  //     - + - +  -1  2 -4  8  =  5
+  //     - + + -  -1  2  4 -8
+  //     - + + +  -1  2  4  8  = 13
+  //     + - - -   1 -2 -4 -8
+  //     + - - +   1 -2 -4  8  =  3
+  //     + - + -   1 -2  4 -8
+  //     + - + +   1 -2  4  8  = 11
+  //     + + - -   1  2 -4 -8
+  //     + + - +   1  2 -4  8  =  7
+  //     + + + -   1  2  4 -8
+  //     + + + +   1  2  4  8  = 15
+  //
+  // Although 1 is a valid result from the AddN operation, the
+  // MultiplyN will reject it because multiply-by-1 is forbidden.
+  // We'll try multiplying each of the above by 3, dividing it by 3,
+  // and dividing 3 by it.  E.g., for 15:
+  //
+  //     / *  /15  3
+  //     * /   15 /3  =  5
+  //     * *   15  3  = 45
+  //
+  std::vector<int> expected_values{
+    3, 27, 15, 39, 1, 1, 9, 33, 21, 5, 45
+  };
+
+  REQUIRE(values == expected_values);
+}

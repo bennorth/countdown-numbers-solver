@@ -15,3 +15,29 @@ static void emit_binop_inversions_(
     oss << (((non_inv_mask & mask) != 0) ? "+" : "-");
   oss << ")";
 }
+
+std::string pprint_opcode(Opcode opcode, const int * cards)
+{
+  std::ostringstream oss;
+
+  switch (opcode.kind)
+  {
+  case OpcodeKind::Value:
+    oss << "V(" << cards[opcode.arg0] << ")";
+    break;
+  case OpcodeKind::MultiplyN:
+    emit_binop_inversions_(oss, 'M', opcode);
+    break;
+  case OpcodeKind::AddN:
+    emit_binop_inversions_(oss, 'A', opcode);
+    break;
+  case OpcodeKind::Return:
+    oss << "R";
+    break;
+  default:
+    oss << "X";
+    break;
+  }
+
+  return oss.str();
+}

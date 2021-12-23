@@ -2,6 +2,9 @@
 #include <cstddef>
 #include <functional>
 #include <boost/container/small_vector.hpp>
+#ifdef EVALUATOR_PPRINT
+#include <string>
+#endif
 
 template<typename T> using small_vector = boost::container::small_vector<T, 12>;
 
@@ -133,3 +136,9 @@ void Evaluator::all_valid(uint8_t n_args, unsigned non_inv_mask)
     all_valid();
   }
 }
+
+#ifdef EVALUATOR_PPRINT
+
+std::string pprint_opcode(Opcode opcode, const int * cards);
+
+#endif

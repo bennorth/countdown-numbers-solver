@@ -182,3 +182,26 @@ TEST_CASE("Generate add/multiply inversions", "")
 
   REQUIRE(values == expected_values);
 }
+
+TEST_CASE("Pretty-printing", "")
+{
+  std::vector<int> cards{1, 2, 4, 8, 3, 200};
+  std::vector<Opcode> program{
+    { OpcodeKind::Value, 0, 0 },
+    { OpcodeKind::Value, 1, 0 },
+    { OpcodeKind::Value, 2, 0 },
+    { OpcodeKind::Value, 3, 0 },
+    { OpcodeKind::AddN, 4, 12 },
+    { OpcodeKind::Value, 4, 0 },
+    { OpcodeKind::MultiplyN, 2, 1 },
+    { OpcodeKind::Return, 0, 0 }
+  };
+
+  const auto pprinted{pprint_opcodes(program, cards.data())};
+
+  const std::vector<std::string> expected_pprinted{
+    "V(1)", "V(2)", "V(4)", "V(8)", "A(++--)", "V(3)", "M(-+)", "R"
+  };
+
+  REQUIRE(pprinted == expected_pprinted);
+}

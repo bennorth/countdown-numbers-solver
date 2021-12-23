@@ -76,7 +76,21 @@ bool Evaluator::all_valid()
 
     case OpcodeKind::MultiplyN:
     case OpcodeKind::AddN:
-      // TODO
+      for (
+        unsigned non_inv_mask = 1;
+        non_inv_mask != (1U << instruction.arg0);
+        ++non_inv_mask
+      ) {
+        Evaluator e{*this};
+        e.all_valid(instruction, non_inv_mask);
+      }
+
+      // Skip rest of program; individual "child" Evaluators will have
+      // processed it.
+      while (instructions++->kind != OpcodeKind::Return)
+        ;
+
+      program_finished = true;
       break;
 
     case OpcodeKind::Return:

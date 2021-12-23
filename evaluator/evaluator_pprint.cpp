@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <vector>
 #include <string>
 #include <sstream>
 #include "evaluator.h"
@@ -40,4 +41,9 @@ std::string pprint_opcode(Opcode opcode, const int * cards)
   }
 
   return oss.str();
+}
+
+std::vector<std::string> Evaluator::pprint_concrete() const
+{
+  return pprint_opcodes(concrete_instructions, cards);
 }

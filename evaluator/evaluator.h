@@ -101,6 +101,10 @@ struct Evaluator {
   void all_valid(uint8_t n_args, unsigned non_inv_mask);
 
   int value() const { return operands.back(); }
+
+#ifdef EVALUATOR_PPRINT
+  std::vector<std::string> pprint_concrete() const;
+#endif
 };
 
 

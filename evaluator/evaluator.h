@@ -3,7 +3,10 @@
 #include <functional>
 #include <boost/container/small_vector.hpp>
 #ifdef EVALUATOR_PPRINT
+#include <vector>
 #include <string>
+#include <algorithm>
+#include <iterator>
 #endif
 
 template<typename T> using small_vector = boost::container::small_vector<T, 12>;
@@ -140,5 +143,20 @@ void Evaluator::all_valid(uint8_t n_args, unsigned non_inv_mask)
 #ifdef EVALUATOR_PPRINT
 
 std::string pprint_opcode(Opcode opcode, const int * cards);
+
+template<class Container>
+std::vector<std::string> pprint_opcodes(
+  const Container & opcodes,
+  const int * cards
+) {
+  std::vector<std::string> pprinted_opcodes{};
+  std::transform(
+    opcodes.begin(),
+    opcodes.end(),
+    std::back_inserter(pprinted_opcodes),
+    [cards](Opcode opcode) { return pprint_opcode(opcode, cards); }
+  );
+  return pprinted_opcodes;
+}
 
 #endif

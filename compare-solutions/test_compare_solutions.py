@@ -40,6 +40,30 @@ class TestOpNode:
             "**/"
         )
 
+    def test_absorbing_like_children_different_op(self):
+        n = ON([ON([VN(100), VN(1)], "+-"), VN(42), VN(400)], "*/*")
+        assert n.absorbing_like_children() == n
+
+    def test_absorbing_like_children_same_op(self):
+        # (100) + (1) + (-3) + (-42) + (400)
+        n = ON([ON([VN(100), ON([VN(1), VN(3)], "-+")], "+-"), VN(42), VN(400)], "+-+")
+        assert n.absorbing_like_children() == ON(
+            [VN(100), VN(1), VN(3), VN(42), VN(400)],
+            "++--+"
+        )
+
+    def test_absorbing_like_children_mixed_ops(self):
+        # (100) + (1) + (-3) + (-42) + (400)
+        n = ON([ON([VN(100), ON([VN(1), VN(3)], "-+")], "+-"), VN(42), VN(400)], "***")
+        assert n.absorbing_like_children() == ON(
+            [
+                ON([VN(100), VN(1), VN(3)], "++-"),
+                VN(42),
+                VN(400)
+            ],
+            "***"
+        )
+
     def test_key(self):
         n = ON([ON([VN(100), VN(1)], "++"), VN(42), VN(400)], "*/*")
         assert n.key() == (

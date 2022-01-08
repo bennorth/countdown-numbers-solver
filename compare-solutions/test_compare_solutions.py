@@ -24,3 +24,18 @@ class TestOpNode:
         assert ops == [VN(23)]
         assert n.children == [VN(100), VN(42), VN(2)]
         assert n.ops == "**/"
+
+
+class TestTopLevel:
+    def test_tree_from_string(self):
+        got_n = compare_solutions.tree_from_string(
+            "V(24) V(13) A(+-) V(99) M(-+) R"
+        )
+        exp_n = ON(
+            [
+                ON([VN(24), VN(13)], "+-"),
+                VN(99)
+            ],
+            "/*"
+        )
+        assert got_n == exp_n

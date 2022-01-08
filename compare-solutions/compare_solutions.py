@@ -19,3 +19,13 @@ class ValueNode:
 class OpNode:
     children: List[Node]
     ops: str
+
+    @classmethod
+    def from_string(cls, s, stack):
+        raw_ops = s[2:-1]
+        ops = (raw_ops if s[0] == "A"
+               else raw_ops.replace("+", "*").replace("-", "/"))
+        n_operands = len(ops)
+        operands = stack[-n_operands:]
+        stack[-n_operands:] = []
+        return cls(operands, ops)

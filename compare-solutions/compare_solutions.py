@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Union
 import subprocess
+from collections import Counter
 
 
 Node = Union["ValueNode", "OpNode"]
@@ -116,3 +117,28 @@ def solutions_from_cmd(cmd, target, cards):
          .key())
         for line in cmd_result.stdout.splitlines()
     )
+
+
+def compare_solvers(target, cards):
+    tree_solutions = solutions_from_cmd("./tree-solve", target, cards)
+    all_rpn_solutions = solutions_from_cmd("./rpn-solve", target, cards)
+
+    rpn_solution_counts = Counter(all_rpn_solutions)
+
+    comparison = {
+        "target": target,
+        "cards": cards,
+        "tree_not_rpn": [],
+        "rpn_not_tree": [],
+    }
+
+    for soln in tree_solutions:
+        n_rpn = rpn_solution_counts[soln]
+        if n_rpn == 0:
+            comparison["tree_not_rpn"].append(soln)
+
+    for soln in rpn_solution_counts:
+        if soln not in tree_solutions:
+            comparison["rpn_not_tree"].append(soln)
+
+    return comparison

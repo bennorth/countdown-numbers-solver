@@ -64,6 +64,23 @@ class OpNode:
 
         return OpNode(canon_children, canon_ops)
 
+    def absorbing_like_children(self):
+        children = []
+        ops = ""
+        for orig_child, op in zip(self.children, self.ops):
+            ch = orig_child.absorbing_like_children()
+            if ch.is_leaf:
+                children.append(ch)
+                ops += op
+            else:
+                if self.is_addition == ch.is_addition:
+                    children.extend(ch.children)
+                    ops += (ch.ops if op in "+*" else ch.ops_inverted)
+                else:
+                    children.append(ch)
+                    ops += op
+        return OpNode(children, ops)
+
     def key(self):
         k = 2 if self.is_addition else 1
         return (k,) + tuple(

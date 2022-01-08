@@ -21,6 +21,9 @@ class ValueNode:
     def in_canonical_order(self):
         return self
 
+    def absorbing_like_children(self):
+        return self
+
 
 @dataclass
 class OpNode:

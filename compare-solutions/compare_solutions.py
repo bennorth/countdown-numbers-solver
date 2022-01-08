@@ -42,6 +42,11 @@ class OpNode:
         return cls(operands, ops)
 
     @property
+    def ops_inverted(self):
+        inverted = {"+": "-", "-": "+", "*": "/", "/": "*"}
+        return "".join(inverted[op] for op in self.ops)
+
+    @property
     def is_addition(self):
         return self.ops[0] in "+-"
 

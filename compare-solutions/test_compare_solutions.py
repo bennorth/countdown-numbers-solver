@@ -29,6 +29,18 @@ class TestOpNode:
         assert n.children == [VN(100), VN(42), VN(2)]
         assert n.ops == "**/"
 
+    def test_key(self):
+        n = ON([ON([VN(100), VN(1)], "++"), VN(42), VN(400)], "*/*")
+        assert n.key() == (
+            1,    # multiplication
+            (0,   # non-inverted ON([VN(100), VN(1)], "++")
+             2,  # addition
+             (0, 0, 100),  # non-inverted 100
+             (0, 0, 1)),   # non-inverted 1
+            (1, 0, 42),   # inverted VN(42)
+            (0, 0, 400)   # non-inverted VN(400)
+        )
+
 
 class TestTopLevel:
     def test_tree_from_string(self):

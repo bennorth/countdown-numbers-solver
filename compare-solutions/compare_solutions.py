@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Union
 import subprocess
+import random
 from collections import Counter
 
 
@@ -142,3 +143,18 @@ def compare_solvers(target, cards):
             comparison["rpn_not_tree"].append(soln)
 
     return comparison
+
+
+if __name__ == "__main__":
+    all_cards = [25, 50, 75, 100] + list(range(1, 11))
+
+    n_done = 0
+    while True:
+        if n_done % 100 == 0:
+            print(n_done)
+        target = random.randint(100, 999)
+        cards = random.choices(all_cards, k=6)
+        cmp = compare_solvers(target, cards)
+        if cmp["tree_not_rpn"] or cmp["rpn_not_tree"]:
+            print(cmp)
+        n_done += 1

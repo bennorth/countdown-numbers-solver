@@ -32,3 +32,11 @@ g++ -o test_evaluator \
     evaluator.cpp \
     evaluator_pprint.cpp \
     test_evaluator.cpp
+
+g++ -O3 \
+    -o evaluator-cli \
+    -DEVALUATOR_PPRINT \
+    programs-6-cards.cpp \
+    evaluator.cpp \
+    evaluator_pprint.cpp \
+    evaluator_cli.cpp

@@ -33,6 +33,10 @@ class OpNode:
         stack[-n_operands:] = []
         return cls(operands, ops)
 
+    @property
+    def is_addition(self):
+        return self.ops[0] in "+-"
+
 
 def tree_from_string(s):
     opcodes = s.split()

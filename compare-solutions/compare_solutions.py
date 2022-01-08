@@ -37,6 +37,12 @@ class OpNode:
     def is_addition(self):
         return self.ops[0] in "+-"
 
+    def key(self):
+        k = 2 if self.is_addition else 1
+        return (k,) + tuple(
+            ((0 if op in "+*" else 1),) + ch.key()
+            for ch, op in zip(self.children, self.ops))
+
 
 def tree_from_string(s):
     opcodes = s.split()

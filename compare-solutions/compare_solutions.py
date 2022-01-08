@@ -14,6 +14,9 @@ class ValueNode:
         v = int(s[2:-1])
         return cls(v)
 
+    def key(self):
+        return (0, self.value)
+
 
 @dataclass
 class OpNode:

@@ -17,6 +17,9 @@ class ValueNode:
     def key(self):
         return (0, self.value)
 
+    def in_canonical_order(self):
+        return self
+
 
 @dataclass
 class OpNode:

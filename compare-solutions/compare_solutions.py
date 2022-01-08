@@ -40,6 +40,20 @@ class OpNode:
     def is_addition(self):
         return self.ops[0] in "+-"
 
+    def in_canonical_order(self):
+        aug_children = list(zip(
+            self.ops,
+            [ch.in_canonical_order() for ch in self.children]
+        ))
+
+        # "+" happens to sort before "-" and "*" before "/".
+        aug_children.sort(key=lambda t: (t[0], t[1].key()))
+
+        canon_ops = "".join(t[0] for t in aug_children)
+        canon_children = [t[1] for t in aug_children]
+
+        return OpNode(canon_children, canon_ops)
+
     def key(self):
         k = 2 if self.is_addition else 1
         return (k,) + tuple(

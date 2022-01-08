@@ -29,6 +29,17 @@ class TestOpNode:
         assert n.children == [VN(100), VN(42), VN(2)]
         assert n.ops == "**/"
 
+    def test_canonical_order(self):
+        n = ON([ON([VN(100), VN(1)], "++"), VN(42), VN(400)], "*/*")
+        assert n.in_canonical_order() == ON(
+            [
+                VN(400),
+                ON([VN(1), VN(100)], "++"),
+                VN(42)
+            ],
+            "**/"
+        )
+
     def test_key(self):
         n = ON([ON([VN(100), VN(1)], "++"), VN(42), VN(400)], "*/*")
         assert n.key() == (

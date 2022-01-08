@@ -8,6 +8,7 @@ Node = Union["ValueNode", "OpNode"]
 @dataclass
 class ValueNode:
     value: int
+    is_leaf = True
 
     @classmethod
     def from_string(cls, s):
@@ -25,6 +26,7 @@ class ValueNode:
 class OpNode:
     children: List[Node]
     ops: str
+    is_leaf = False
 
     @classmethod
     def from_string(cls, s, stack):

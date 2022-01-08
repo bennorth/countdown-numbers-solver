@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from typing import List, Union
+import subprocess
 
 
 Node = Union["ValueNode", "OpNode"]
@@ -103,3 +104,15 @@ def tree_from_string(s):
             pass
     assert len(ops) == 1
     return ops[0]
+
+
+def solutions_from_cmd(cmd, target, cards):
+    args = [cmd] + [str(n) for n in [target] + cards]
+    cmd_result = subprocess.run(args, capture_output=True, encoding="utf-8")
+    return list(
+        (tree_from_string(line)
+         .absorbing_like_children()
+         .in_canonical_order()
+         .key())
+        for line in cmd_result.stdout.splitlines()
+    )

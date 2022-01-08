@@ -47,3 +47,18 @@ std::vector<std::string> Evaluator::pprint_concrete() const
 {
   return pprint_opcodes(concrete_instructions, cards);
 }
+
+std::string Evaluator::pprint_concrete_flat() const
+{
+  std::ostringstream oss;
+  auto opcodes{pprint_concrete()};
+  std::copy(
+    opcodes.begin(),
+    opcodes.end(),
+    std::ostream_iterator<std::string>(oss, " ")
+  );
+
+  // Trim off trailing space:
+  const auto str = oss.str();
+  return str.substr(0, str.size() - 1);
+}

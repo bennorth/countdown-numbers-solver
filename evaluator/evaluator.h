@@ -104,6 +104,7 @@ struct Evaluator {
 
 #ifdef EVALUATOR_PPRINT
   std::vector<std::string> pprint_concrete() const;
+  std::string pprint_concrete_flat() const;
 #endif
 };
 

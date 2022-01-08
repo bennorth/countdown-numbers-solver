@@ -9,6 +9,10 @@ class TestValueNode:
         n = VN.from_string("V(123)")
         assert n.value == 123
 
+    def test_key(self):
+        v = VN(42)
+        assert v.key() == (0, 42)
+
 
 class TestOpNode:
     def test_from_string_add(self):

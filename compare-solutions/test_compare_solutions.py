@@ -1,9 +1,26 @@
 import compare_solutions
 
 VN = compare_solutions.ValueNode
+ON = compare_solutions.OpNode
 
 
 class TestValueNode:
     def test_from_string(self):
         n = VN.from_string("V(123)")
         assert n.value == 123
+
+
+class TestOpNode:
+    def test_from_string_add(self):
+        ops = [VN(23), VN(100), VN(42), VN(2)]
+        n = ON.from_string("A(+-+)", ops)
+        assert ops == [VN(23)]
+        assert n.children == [VN(100), VN(42), VN(2)]
+        assert n.ops == "+-+"
+
+    def test_from_string_mult(self):
+        ops = [VN(23), VN(100), VN(42), VN(2)]
+        n = ON.from_string("M(++-)", ops)
+        assert ops == [VN(23)]
+        assert n.children == [VN(100), VN(42), VN(2)]
+        assert n.ops == "**/"

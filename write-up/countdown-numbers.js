@@ -67,3 +67,32 @@ const pprintPrograms = (opcode_u8s) => {
     }
     return exprns;
 };
+
+document.getElementById("solve").addEventListener("click", () => {
+    const cardValues = allCards();
+    const targetValue = inputValue("tgt");
+
+    let s = new Module.CountdownSolver(...cardValues, targetValue);
+    try {
+        s.solve();
+
+        const solutionPrograms = new Uint8Array(
+            Module.HEAPU8.buffer,
+            s.solutionPrograms(),
+            s.solutionProgramsNBytes()
+        );
+
+        const exprns = pprintPrograms(solutionPrograms);
+
+        let resultsDiv = document.getElementById("solve-results");
+        resultsDiv.innerHTML = "";
+
+        for (const exprn of exprns) {
+            let p = document.createElement("p");
+            p.innerText = exprn;
+            resultsDiv.appendChild(p);
+        }
+    } finally {
+        s.delete();
+    }
+});

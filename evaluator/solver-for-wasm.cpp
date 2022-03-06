@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include "evaluator.h"
 
+#include <emscripten/bind.h>
+
 struct CountdownSolver {
   std::array<int, 6> cards;
   int target;
@@ -38,3 +40,13 @@ struct CountdownSolver {
     return solutions.size() * sizeof(Opcode);
   }
 };
+
+
+EMSCRIPTEN_BINDINGS(countdown_solver) {
+  emscripten::class_<CountdownSolver>("CountdownSolver")
+    .constructor<int, int, int, int, int, int, int>()
+    .function("solve", &CountdownSolver::solve)
+    .function("solutionPrograms", &CountdownSolver::solution_programs)
+    .function("solutionProgramsNBytes", &CountdownSolver::solution_programs_nbytes)
+    ;
+}

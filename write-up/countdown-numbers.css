@@ -11,3 +11,46 @@
         padding: 15px;
     }
 }
+
+#countdown-solver {
+    width: 34rem;
+    margin: 1rem auto;
+    border-top: 1rem solid #eee;
+    border-bottom: 1rem solid #eee;
+    background-color: #eee;
+    border-radius: 8px;
+}
+
+#countdown-solver > .inputs,
+#countdown-solver > .inputs > .target {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#countdown-solver > .inputs > .cards {
+    display: flex;
+    flex-direction: row;
+}
+
+#countdown-solver > .inputs > .cards > input {
+    width: 2.5rem;
+    text-align: center;
+    margin: 0px 0.5rem;
+}
+
+#countdown-solver > .inputs > .target > input {
+    width: 3rem;
+    text-align: center;
+}
+
+#countdown-solver > .inputs > button {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #262;
+    color: white;
+    font-size: 1.125rem;
+    cursor: pointer;
+}

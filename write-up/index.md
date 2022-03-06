@@ -1,5 +1,27 @@
 # Finding solutions to the Countdown numbers round
 
+<div id="countdown-solver">
+  <div class="inputs">
+    <span class="label">Cards:</span>
+    <div class="cards">
+      <input id="c0" type="text" value="100">
+      <input id="c1" type="text" value="7">
+      <input id="c2" type="text" value="5">
+      <input id="c3" type="text" value="3">
+      <input id="c4" type="text" value="2">
+      <input id="c5" type="text" value="1">
+    </div>
+    <div class="target">
+      <span class="label">Target:</span>
+      <input id="tgt" type="text" value="729">
+    </div>
+    <button id="solve">Solve!</button>
+  </div>
+  <div id="solve-results">
+  <p class="placeholder">Solutions will appear here.</p>
+  </div>
+</div>
+
 ## General context
 
 On the TV gameshow Countdown, there’s a round where six number cards

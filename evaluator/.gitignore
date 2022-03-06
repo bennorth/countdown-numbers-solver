@@ -5,3 +5,5 @@
 /test_evaluator
 /evaluator-cli
 /emsdk/
+/CountdownSolver.js
+/CountdownSolver.wasm

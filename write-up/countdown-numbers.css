@@ -54,3 +54,29 @@
     font-size: 1.125rem;
     cursor: pointer;
 }
+
+#solve-results {
+    width: 28rem;
+    height: 16rem;
+    background-color: #efe;
+    margin: 1rem auto;
+    overflow-y: scroll;
+}
+
+
+#solve-results > p {
+    text-align: center;
+    margin: 0.125rem 0px;
+}
+
+#solve-results > p:first-child {
+    margin-top: 0.5rem;
+}
+
+#solve-results > p:last-child {
+    margin-bottom: 0.5rem;
+}
+
+#solve-results > p.placeholder {
+    font-style: italic;
+}

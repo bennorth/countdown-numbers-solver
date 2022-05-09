@@ -31,6 +31,11 @@ xxd -i $PROGRAMS_BIN \
     | sed 's/unsigned int/static const size_t/' \
     >> $PROGRAMS_H
 
+[ -e catch.hpp ] || {
+    echo Fetching catch.hpp ...
+    wget https://github.com/catchorg/Catch2/releases/download/v2.13.9/catch.hpp
+}
+
 g++ -o test_evaluator \
     -DEVALUATOR_PPRINT \
     programs-6-cards.cpp \

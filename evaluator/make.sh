@@ -4,6 +4,11 @@ PROGRAMS_BIN=programs-6-cards.bin
 PROGRAMS_H=programs-6-cards.h
 PROGRAMS_CPP=programs-6-cards.cpp
 
+command -v python > /dev/null || {
+    echo Could not find python
+    exit 1
+}
+
 (
     cd ../tree-programs
     python compile_trees.py 6

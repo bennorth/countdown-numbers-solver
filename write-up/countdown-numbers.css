@@ -53,6 +53,10 @@
     border-radius: 8px;
 }
 
+#countdown-solver .label {
+    margin: 0.5rem 0px;
+}
+
 #countdown-solver > .inputs,
 #countdown-solver > .inputs > .target {
     display: flex;

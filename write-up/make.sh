@@ -35,6 +35,9 @@ for img in \
     sample-add-mult-tree.png \
     sample-add-mult-tree-with-inverses.png \
     sample-add-mult-tree-with-inverses-2.png \
+    sample-indexed-tree-2.png \
+    Countdown-numbers-952.jpg \
+    Countdown-numbers-813.jpg \
     ; do
     cp images/"${img}" dist/images
 done

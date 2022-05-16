@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <cstdlib>
 
 #include "evaluator.h"
 #include "programs-6-cards.h"
@@ -8,6 +9,11 @@
 
 int main(int argc, char ** argv)
 {
+  if (argc < 2) {
+    std::cerr << "Usage: evaluator-cli TARGET CARD_1 CARD_2 ... CARD_N\n";
+    return EXIT_FAILURE;
+  }
+
   std::vector<int> cards;
 
   for (int i = 1; i != argc; ++i) {

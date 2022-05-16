@@ -9,6 +9,7 @@ for stem in \
     sample-add-mult-tree \
     sample-add-mult-tree-with-inverses-2 \
     sample-add-mult-tree-with-inverses \
+    sample-indexed-tree-2 \
     ; do
     inkscape \
         --export-type=png \

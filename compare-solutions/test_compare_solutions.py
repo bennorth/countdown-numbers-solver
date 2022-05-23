@@ -1,3 +1,5 @@
+import pytest
+
 import compare_solutions
 
 VN = compare_solutions.ValueNode
@@ -86,6 +88,15 @@ class TestOpNode:
         ("pprint_expr", "((100 − 1) × 400 ÷ 42)"),
         ("pprint_toplevel", "(100 − 1) × 400 ÷ 42"),
     ]
+
+    @pytest.mark.parametrize(
+        "method, exp_result",
+        pprint_specs,
+        ids=[s[0] for s in pprint_specs],
+    )
+    def test_pprint(self, method, exp_result):
+        n = ON([ON([VN(1), VN(100)], "-+"), VN(42), VN(400)], "*/*")
+        assert getattr(n, method)() == exp_result
 
 
 class TestTopLevel:

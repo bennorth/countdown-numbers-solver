@@ -30,6 +30,20 @@
     padding: 0px 2rem;
 }
 
+.markdown-body span.as-inverted {
+    padding: 4px;
+    border: 4px solid #d55e00;
+    border-radius: 8px;
+}
+
+.markdown-body span.as-inverted.operand {
+    background-color: #a3d7f5;
+}
+
+.markdown-body span.as-inverted.mult-op {
+    background-color: #dda7c5;
+}
+
 #countdown-solver {
     width: 34rem;
     margin: 1rem auto;

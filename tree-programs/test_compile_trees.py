@@ -172,3 +172,14 @@ class TestTopLevel:
             # Terminator:
             0x30
         ]
+
+    def test_total_n_programs(self):
+        for n_cards in range(1, 7):
+            u8s = ct.all_programs(n_cards)
+            n_ret_opcodes = sum(
+                1 if u8 == 0x30 else 0
+                for u8 in u8s
+            )
+            # Final program is terminated with an extra RET:
+            n_programs = n_ret_opcodes - 1
+            assert ct.total_n_programs(n_cards) == n_programs

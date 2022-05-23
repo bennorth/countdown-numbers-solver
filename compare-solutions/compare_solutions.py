@@ -27,6 +27,9 @@ class ValueNode:
     def absorbing_like_children(self):
         return self
 
+    def pprint_expr(self):
+        return str(self.value)
+
 
 @dataclass
 class OpNode:

@@ -171,6 +171,14 @@ def cli(ctx, n_cards):
     ctx.obj["n_cards"] = n_cards
 
 
+@cli.command(name="dump-programs")
+@click.pass_context
+def dump_programs(ctx):
+    "Emit to stdout a binary encoding of all programs"
+    n_cards = ctx.obj["n_cards"]
+    sys.stdout.buffer.write(bytes(all_programs(n_cards)))
+
+
 if __name__ == "__main__":
     n_cards = int(sys.argv[1])
     sys.stdout.buffer.write(bytes(all_programs(n_cards)))

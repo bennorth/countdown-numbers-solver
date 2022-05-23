@@ -106,29 +106,7 @@ this</span>):
 
 The question then is how to generate all n-ary trees with up to 6 leaf
 nodes.  One recursive solution to this problem is described in THAT
-PAPER.  Labelling the leaf nodes from zero up to (N-1), there is only
-one tree with one node:
-
-PICTURE
-
-To take the set of m-leaf-node trees and generate the set of
-(m+1)-leaf-node trees, we proceed as follows.  We must decide where to
-put the node with label “m”.  For each m-leaf-node tree, we look at
-every node of that tree, and consider inserting the new node “at” that
-node of that tree.  What “insert the new node at the node” means
-depends on whether the chosen node of the m-leaf-node tree is a branch
-node or a leaf node.
-
-To insert a new node “at a branch node” means to add the new node as
-an additional child of that node.
-
-PICTURE
-
-To insert a new node “at a leaf node” means to replace that leaf node
-with a branch node having two children: the original leaf node and the
-new node.
-
-The paper gives the total number of such trees in its SECTION
+PAPER, which gives the total number of such trees in its SECTION
 BLAHBLAH.
 
 Given this large set of trees, we can generate all possible Countdown
@@ -177,7 +155,7 @@ of programs by following all the different execution paths arising
 from the different subset choices.  To ensure we keep to the rules
 about always having positive integer intermediate results, it
 processes all non-inverted arguments before the inverted ones.  If the
-result fails to be a positive integer, we abandon that execution
+result of any operation fails to be a positive integer, we abandon that execution
 branch.  We also abandon a branch if it involves multiplying by 1.
 This is not strictly against the rules, but it seems cleaner to
 exclude those solutions.
@@ -209,7 +187,7 @@ with a “canonical” representation of a given solution, to know when
 two solutions, different on the surface, were really “the same”.
 EXAMPLE OF TWO EQUIVALENT SOLNS.
 
-Results of this comparison over many random problems was that all
+Results of this comparison over many random problems were that all
 solutions found by my approach were also found by THE OTHER ONE, and
 vice versa. Runtime was pretty similar too.  EXACT FIGURES FROM C/C++
 VERSIONS.  Of the two approaches, the RPN one has the advantage of
@@ -218,7 +196,7 @@ was reassuring that the solution sets matched in all the trials I ran.
 The RPN solution did tend to produce duplicate solutions, though.
 MEDIAN DUPLICATION AMOUNT?  As a cherry-picked example, the problem
 
-A B C D E F -> G,
+50 6 75 100 10 8 --> 899
 
 PRESENT IN SAME WAY AS INPUT SECTION OF SOLVER AT TOP OF PAGE
 
@@ -226,7 +204,7 @@ when analysed by my solver, has the unique solution
 
 BLAH
 
-The RPN solver produces the following NNNN variants:
+The RPN solver produces the following 15 variants:
 
 BLAH BLAH BLAH
 
@@ -235,7 +213,7 @@ which are all essentially “the same”.
 ## Future work
 
 It’s possible to have two cards with the same number.  This solver
-will get duplicated solutions if duplicated numbers on cards; fix
+can produce duplicated solutions if duplicated numbers on cards; fix
 this.
 
 Produce something even if we can’t get target exactly.

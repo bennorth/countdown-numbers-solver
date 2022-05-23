@@ -13,6 +13,10 @@ class TestValueNode:
         v = VN(42)
         assert v.key() == (0, 42)
 
+    def test_pprint_expr(self):
+        v = VN(102)
+        assert v.pprint_expr() == "102"
+
 
 class TestOpNode:
     def test_from_string_add(self):

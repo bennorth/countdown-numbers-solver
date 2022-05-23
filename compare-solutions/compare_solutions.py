@@ -93,6 +93,21 @@ class OpNode:
             ((0 if op in "+*" else 1),) + ch.key()
             for ch, op in zip(self.children, self.ops))
 
+    def pprint_expr(self):
+        non_inv_ch = [
+            ch.pprint_expr() for ch, op in zip(self.children, self.ops)
+            if op in "+*"
+        ]
+        inv_ch = [
+            ch.pprint_expr() for ch, op in zip(self.children, self.ops)
+            if op not in "+*"
+        ]
+        non_inv_op = "+" if self.is_addition else "×"
+        non_inv_part = f" {non_inv_op} ".join(non_inv_ch)
+        inv_op = "−" if self.is_addition else "÷"
+        inv_part = "" if not inv_ch else f" {inv_op} ".join([""] + inv_ch)
+        return f"({non_inv_part}{inv_part})"
+
 
 def tree_from_string(s):
     opcodes = s.split()

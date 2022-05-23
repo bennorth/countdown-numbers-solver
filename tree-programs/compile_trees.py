@@ -4,6 +4,7 @@ from typing import Optional, Union, List
 from functools import reduce
 from operator import concat
 from itertools import combinations
+import math
 import sys
 
 
@@ -138,6 +139,21 @@ def all_programs(n_cards):
     program_u8s.append(Opcode(OpcodeKind.Return).as_uint8())
 
     return program_u8s
+
+
+def total_n_programs(n_cards):
+    """Total number of programs using at most `n_cards` cards.
+
+    Programs using strictly fewer than `n_cards` cards (say, `k`
+    cards) are counted repeatedly, according to how many choices of
+    `k` cards there are from `n_cards`.
+    """
+    n_programs = 0
+    for n_used in range(1, n_cards + 1):
+        n_choices_of_cards = math.comb(n_cards, n_used)
+        n_trees = sum(1 for t in all_trees(n_used))
+        n_programs += n_trees * n_choices_of_cards
+    return n_programs
 
 
 if __name__ == "__main__":

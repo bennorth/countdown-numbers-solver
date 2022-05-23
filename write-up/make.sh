@@ -28,3 +28,13 @@ pandoc -s \
 
 cp ../evaluator/CountdownSolver.js ../evaluator/CountdownSolver.wasm dist
 cp countdown-numbers.css countdown-numbers.js dist
+
+mkdir -p dist/images
+
+for img in \
+    sample-add-mult-tree.png \
+    sample-add-mult-tree-with-inverses.png \
+    sample-add-mult-tree-with-inverses-2.png \
+    ; do
+    cp images/"${img}" dist/images
+done

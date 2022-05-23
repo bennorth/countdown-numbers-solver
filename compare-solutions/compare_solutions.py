@@ -108,6 +108,10 @@ class OpNode:
         inv_part = "" if not inv_ch else f" {inv_op} ".join([""] + inv_ch)
         return f"({non_inv_part}{inv_part})"
 
+    def pprint_toplevel(self):
+        # Strip top level of parentheses.
+        return self.pprint_expr()[1:-1]
+
 
 def tree_from_string(s):
     opcodes = s.split()

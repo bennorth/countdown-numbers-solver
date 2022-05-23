@@ -6,6 +6,7 @@ from operator import concat
 from itertools import combinations
 import math
 import sys
+import click
 
 
 TreeNode = Union["LeafNode", "InternalNode"]
@@ -154,6 +155,20 @@ def total_n_programs(n_cards):
         n_trees = sum(1 for t in all_trees(n_used))
         n_programs += n_trees * n_choices_of_cards
     return n_programs
+
+
+@click.group()
+@click.option(
+    "--n-cards",
+    required=True,
+    type=click.IntRange(min=1),
+    metavar="N",
+    help="Maximum number of cards to use in programs",
+)
+@click.pass_context
+def cli(ctx, n_cards):
+    ctx.ensure_object(dict)
+    ctx.obj["n_cards"] = n_cards
 
 
 if __name__ == "__main__":

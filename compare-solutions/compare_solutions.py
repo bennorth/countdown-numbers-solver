@@ -130,6 +130,15 @@ def tree_from_string(s):
     return ops[0]
 
 
+def all_solutions_from_cmd(cmd, target, cards):
+    args = [cmd] + [str(n) for n in [target] + cards]
+    cmd_result = subprocess.run(args, capture_output=True, encoding="utf-8")
+    return list(
+        tree_from_string(line)
+        for line in cmd_result.stdout.splitlines()
+    )
+
+
 def solutions_from_cmd(cmd, target, cards):
     args = [cmd] + [str(n) for n in [target] + cards]
     cmd_result = subprocess.run(args, capture_output=True, encoding="utf-8")

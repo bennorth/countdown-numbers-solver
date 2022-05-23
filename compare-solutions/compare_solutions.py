@@ -151,6 +151,8 @@ def compare_solvers(target, cards):
     comparison = {
         "target": target,
         "cards": cards,
+        "tree": tree_solutions,
+        "rpn": all_rpn_solutions,
         "tree_not_rpn": [],
         "rpn_not_tree": [],
     }

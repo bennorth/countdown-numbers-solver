@@ -140,14 +140,12 @@ def all_solutions_from_cmd(cmd, target, cards):
 
 
 def solutions_from_cmd(cmd, target, cards):
-    args = [cmd] + [str(n) for n in [target] + cards]
-    cmd_result = subprocess.run(args, capture_output=True, encoding="utf-8")
     return list(
-        (tree_from_string(line)
+        (tree
          .absorbing_like_children()
          .in_canonical_order()
          .key())
-        for line in cmd_result.stdout.splitlines()
+        for tree in all_solutions_from_cmd(cmd, target, cards)
     )
 
 

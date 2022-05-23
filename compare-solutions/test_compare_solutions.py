@@ -80,6 +80,13 @@ class TestOpNode:
             (0, 0, 400)   # non-inverted VN(400)
         )
 
+    pprint_specs = [
+        # Need to take care with symbols: they are minus (not hyphen),
+        # multiply (not asterisk), divide (not slash).
+        ("pprint_expr", "((100 − 1) × 400 ÷ 42)"),
+        ("pprint_toplevel", "(100 − 1) × 400 ÷ 42"),
+    ]
+
 
 class TestTopLevel:
     def test_tree_from_string(self):

@@ -179,6 +179,14 @@ def dump_programs(ctx):
     sys.stdout.buffer.write(bytes(all_programs(n_cards)))
 
 
+@cli.command(name="count-programs")
+@click.pass_context
+def n_programs(ctx):
+    "Print the number of programs"
+    n_cards = ctx.obj["n_cards"]
+    click.echo(str(total_n_programs(n_cards)))
+
+
 if __name__ == "__main__":
     n_cards = int(sys.argv[1])
     sys.stdout.buffer.write(bytes(all_programs(n_cards)))

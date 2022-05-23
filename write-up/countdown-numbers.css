@@ -12,6 +12,24 @@
     }
 }
 
+.markdown-body figure {
+    background-color: #eee;
+    text-align: center;
+    margin: 2rem 4rem;
+    padding: 2rem 0px 1rem;
+}
+
+.markdown-body figure img {
+    background-color: inherit;
+}
+
+.markdown-body figure figcaption {
+    margin-top: 1.5rem;
+    font-weight: bold;
+    font-size: 1.125rem;
+    padding: 0px 2rem;
+}
+
 #countdown-solver {
     width: 34rem;
     margin: 1rem auto;

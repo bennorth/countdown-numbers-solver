@@ -11,7 +11,7 @@ command -v python > /dev/null || {
 
 (
     cd ../tree-programs
-    python compile_trees.py 6
+    python compile_trees.py --n-cards 6 dump-programs
 ) > $PROGRAMS_BIN
 
 # Seems a bit odd to run xxd twice, but it's quick, and saves using

@@ -188,5 +188,4 @@ def n_programs(ctx):
 
 
 if __name__ == "__main__":
-    n_cards = int(sys.argv[1])
-    sys.stdout.buffer.write(bytes(all_programs(n_cards)))
+    cli(obj={})

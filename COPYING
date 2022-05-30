@@ -1,0 +1,88 @@
+The source code files
+
+    tree-programs/compile_trees.py
+    tree-programs/test_compile_trees.py
+    compare-solutions/compare_solutions.py
+    compare-solutions/test_compare_solutions.py
+    evaluator/evaluator.cpp
+    evaluator/evaluator.h
+    evaluator/evaluator_cli.cpp
+    evaluator/evaluator_pprint.cpp
+    evaluator/solver-for-wasm.cpp
+    evaluator/test_evaluator.cpp
+    other-solutions/rpn-solve.cpp
+    tree-programs/compile_trees.py
+    tree-programs/test_compile_trees.py
+    write-up/countdown-numbers.js
+
+are Copyright 2022 Ben North and are made available under the GPLv3.
+The file GNU-GPL-v3.txt contains the licence text.
+
+(The "rpn-solve.cpp" file is inspired by a solver published at
+
+    https://github.com/rvedotrc/numbers
+
+However, that repo does not include licensing information, so the
+logic was re-implemented.)
+
+The build and development script and support files
+
+    evaluator/make-wasm.sh
+    evaluator/make.sh
+    other-solutions/make.sh
+    write-up/images/make.sh
+    write-up/make.sh
+    write-up/serve.py
+    write-up/serve.sh
+    write-up/include-livereload.html
+    write-up/template.html
+
+and the administration files
+
+    .gitignore
+    compare-solutions/.gitignore
+    evaluator/.gitignore
+    other-solutions/.gitignore
+    write-up/.gitignore
+    write-up/images/.gitignore
+
+and the README files
+
+    README.md
+    compare-solutions/README.md
+    evaluator/README.md
+    tree-programs/README.md
+
+and the style file
+
+    write-up/countdown-numbers.css
+
+are hereby placed into the public domain.
+
+
+The image files
+
+    write-up/images/Countdown-numbers-813.jpg
+    write-up/images/Countdown-numbers-952.jpg
+
+are fair-use / fair-dealing extracts from the YouTube videos
+
+    https://youtu.be/_JQYYz92-Uk
+    https://youtu.be/pfa3MHLLSWI
+
+respectively.
+
+
+The image files
+
+    write-up/images/sample-add-mult-tree-with-inverses-2.svg
+    write-up/images/sample-add-mult-tree-with-inverses.svg
+    write-up/images/sample-add-mult-tree.svg
+    write-up/images/sample-indexed-tree-2.svg
+
+and the write-up content
+
+    write-up/index.md
+
+are Copyright 2022 Ben North and are made available under the
+CC-BY-NC-3.0 licence.

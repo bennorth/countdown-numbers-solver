@@ -3,6 +3,7 @@ from typing import List, Union
 import subprocess
 import random
 from collections import Counter
+import click
 
 
 Node = Union["ValueNode", "OpNode"]
@@ -184,6 +185,12 @@ def compare_solvers(target, cards):
 
 
 All_Cards = [25, 50, 75, 100] + list(range(1, 11))
+
+
+@click.group()
+def cli():
+    pass
+
 
 if __name__ == "__main__":
     n_done = 0

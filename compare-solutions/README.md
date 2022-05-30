@@ -6,7 +6,7 @@
 python3 -m venv venv
 . venv/bin/activate
 pip install --upgrade pip
-pip install pytest
+pip install pytest click
 ```
 
 Compile the two solvers to be compared and copy them here under the

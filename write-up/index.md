@@ -152,13 +152,15 @@ dumped representations of those trees as ‘programs’ for a stack-based
 machine.  The instructions this machine understands are “push card's
 value onto the stack” and “pop the top *N* values off the stack,
 combine them with *OP*, and push the result back on the stack”.  The
-operation *OP* can be addition or multiplication.  The exploration of
-the choices of which inputs to invert is deferred until evaluation
-time.
+operation *OP* can be addition or multiplication.  The program is then
+equivalent to the reverse Polish notation (postfix) representation of
+the expression.
 
-At the time the programs are generated, we don't know the values of
-the cards, so the program refers to `card[0]` up to `card[5]`, leaving
-the values to be filled in at evaluation time.
+The exploration of the choices of which inputs to invert is deferred
+until evaluation time.  At the time the programs are generated, we
+don't know the values of the cards, so the program refers to `card[0]`
+up to `card[5]`, leaving the values to be filled in at evaluation
+time.
 
 <figure>
   <img src="images/sample-indexed-tree-2.png">
@@ -170,13 +172,14 @@ programs are hard-coded into a separate C++ program, which interprets
 them as program templates.  It pre-processes the list by copying and
 then swapping “+” with “×” in the copies.  It executes the double-size
 list of programs by following all the different execution paths
-arising from the different subset choices.  To ensure we can keep to
-the rules about always having positive integer intermediate results,
-it processes all non-inverted arguments before the inverted ones.  If
-the result of any operation fails to be a positive integer, we abandon
-that execution branch.  We also abandon a branch if it involves
-multiplying by&nbsp;1.  Multiplying by&nbsp;1 is not strictly against
-the rules, but it seems cleaner to exclude those solutions.
+arising from the different choices of what subset of each node's
+children to invert.  To ensure we can keep to the rules about always
+having positive integer intermediate results, it processes all
+non-inverted arguments before any inverted ones.  If the result of any
+operation fails to be a positive integer, we abandon that execution
+branch.  We also abandon a branch if it involves multiplying
+by&nbsp;1.  Multiplying by&nbsp;1 is not strictly against the rules,
+but it seems cleaner to exclude those solutions.
 
 To wrap this in something suitable for demonstration on the web, I
 compiled the C++ into wasm using emscripten.  A bare JS program takes
@@ -186,7 +189,7 @@ human-friendly way.
 
 The code is available on GitHub:
 
-* https://github.com/bennorth/countdown-solver/
+* https://github.com/bennorth/countdown-numbers-solver/
 
 
 ## Examples
@@ -211,27 +214,61 @@ YouTube has some examples of unusually difficult numbers rounds:
 </figure>
 
 
-## Comparison with other solvers
+## Other solvers
 
 I deliberately didn’t look for details of how other solvers worked
-before doing this.  Doing so afterwards revealed that, as far as I
-could find, everyone else has taken the approach of exploring all
-valid Reverse Polish Notation (postfix) expressions, with some efforts
-to remove duplication.  For example, THIS ONE explains AVOID BY
-PUSHING BIGGER ONE.  To check my solver, I wrote a Python program
-which runs [one by Rachel Evans](https://github.com/rvedotrc/numbers)
-and compares the solutions it generates to those my approach
-generates.  Some care needed to come up with a “canonical”
-representation of a given solution, to know when two solutions,
-different on the surface, were really “the same”.
+before doing this.  Doing so afterwards, I found that almost everyone
+else has taken the approach of exploring all valid Reverse Polish
+Notation (postfix) expressions; for example, [this nice analysis by
+Henriqiue Daitx](https://www.daitx.com/2016/05/01/countdown-math/),
+and [this C implementation by Rachel
+Evans](https://github.com/rvedotrc/numbers).
 
-Results of this comparison over many random problems were that all
-solutions found by my approach were also found by Evans's, and vice
-versa.  Runtime was pretty similar too.  Of the two approaches, the
-RPN one has the advantage of more obviously being correct in terms of
-not missing solutions, so it was reassuring that the solution sets
-matched in all the trials I ran.  The RPN solution did tend to produce
-duplicate solutions, though.  As a cherry-picked example, the problem
+[Brute Forcing The Countdown Numbers Game —
+Computerphile](https://youtu.be/cVMhkqPP2YI) also uses generation of
+RPN programs.  A comment says "The first thing that sprang to mind was
+a tree-based approach" but didn't elaborate, and replies didn't
+describe what I did in this project.
+
+Some of these analyses note that there are ways to cut down the search
+space, which also reduces duplication in the emitted solutions.  For
+example, [Tim Hargreaves points
+out](https://www.ttested.com/polish-countdown/) that we need not look
+at solutions where addition or multiplication expressions have their
+operands in non-ascending order; Evans's solver also uses this
+observation.
+
+[A solver by David
+Llewellyn-Jones](https://github.com/llewelld/countdown) does take a
+tree-based approach, using binary trees where all four operators can
+appear as the non-leaf nodes.
+
+[HappySoft's Countdown Numbers
+game](http://happysoft.org.uk/countdown/numgame.php) ranks highly in
+web search results.  It handles the case where the target number can
+not be reached exactly; but it does sometimes miss solutions.  For
+example, it produces an expression giving 950 for the first example
+above.  Its solver is server-side so we can't tell what approach it
+takes.
+
+
+## Validating my solver
+
+To check my solver, I wrote a Python program which repeatedly runs
+both my solver and [Evans's RPN-based
+one](https://github.com/rvedotrc/numbers), and compares their
+solutions.  Some care is needed to come up with a canonical
+representation of a given solution, to know when two solutions,
+different on the surface, are really “the same”.
+
+Results of this comparison over many thousands of random problems were
+that all solutions found by my approach were also found by Evans's,
+and vice versa.  Runtime was pretty similar too.  Of the two
+approaches, Evans's RPN one has the advantage of more obviously being
+correct in terms of not missing solutions, so it was reassuring that
+the solution sets matched in all the trials I ran.  The RPN solution
+did tend to produce duplicate solutions, though.  As a cherry-picked
+example, the problem
 
 * Cards: 50, 6, 75, 100, 10, 8
 * Target: 899
@@ -240,7 +277,7 @@ when analysed by my solver, has the unique solution
 
 * 75 + ((100 + 10) × 8) − 50 − 6
 
-The RPN solver produces the following 15 variants:
+On the other hand, the RPN solver produces the following 15 solutions:
 
 * ((75 − 6) − 50) + (8 × (10 + 100))
 * ((75 − 6) + (8 × (10 + 100))) − 50
@@ -258,35 +295,35 @@ The RPN solver produces the following 15 variants:
 * 75 + ((8 × (10 + 100)) − (6 + 50))
 * 75 + (((8 × (10 + 100)) − 50) − 6)
 
-which are all essentially “the same”.
+which are all essentially the same.
 
 
 ## Future work
 
 It’s possible to have two cards with the same number.  The tree-based
 solver described here can produce duplicated solutions if given
-repeated numbers for the cards.  It shouldn't.
+repeated numbers for the cards.  For example, for the problem
+
+* Cards: 3, 3, 25, 50, 75, 100
+* Target: 996
+
+(which [the DataGenetics blog
+reports](https://datagenetics.com/blog/august32014/index.html)
+involves the largest intermediate value (99,600) of any possible
+game), my solver gives the two essentially identical solutions
+
+* (((3 + 50) × 25) + 3) × 75 ÷ 100
+* (3 + ((3 + 50) × 25)) × 75 ÷ 100
+
+It shouldn't do this.
 
 In the real game, if the target cannot be reached, the winner is the
 person who can get closest to it.  The tree-based solver here does not
 produce anything if it can't get the target exactly.  It should.
 
 
-## Other solvers
+## Source
 
-* This web page ranks highly in web search results: [HappySoft's
-  Countdown Numbers
-  game](http://happysoft.org.uk/countdown/numgame.php).  It handles
-  the case where the target number can not be reached exactly, but
-  sometimes misses solutions.  For example, it produces an expression
-  giving 950 for the first example above.
+The code for the solver (and this write-up) is available on GitHub:
 
-* [An RPN-based solver by Rachel
-  Evans](https://github.com/rvedotrc/numbers) — this is the one I used
-  for comparison against the tree-based solver in this project.
-
-* [Brute Forcing The Countdown Numbers Game —
-  Computerphile](https://youtu.be/cVMhkqPP2YI) also
-  uses generation of RPN programs.  A comment says "The first thing
-  that sprang to mind was a tree-based approach" but didn't elaborate,
-  and replies didn't describe what I did in this project.
+* https://github.com/bennorth/countdown-numbers-solver/

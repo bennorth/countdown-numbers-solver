@@ -206,5 +206,46 @@ def compare_solutions():
         n_done += 1
 
 
+@cli.command(name="find-rpn-dups")
+def find_rpn_dups():
+    max_n_rpn = 0
+    while True:
+        target = random.randint(100, 999)
+        cards = random.choices(All_Cards, k=6)
+        if len(set(cards)) < 6:
+            continue
+
+        cmp = compare_solvers(target, cards)
+        if len(cmp["tree"]) != 1:
+            continue
+
+        n_rpn = len(cmp["rpn"])
+        if n_rpn <= max_n_rpn:
+            continue
+
+        max_n_rpn = n_rpn
+
+        # A bit wasteful to re-do these but never mind:
+
+        tree_solns = all_solutions_from_cmd(
+            "./tree-solve",
+            target,
+            cards,
+        )
+        assert len(tree_solns) == 1
+
+        rpn_solns = all_solutions_from_cmd(
+            "./rpn-solve",
+            target,
+            cards,
+        )
+        assert len(rpn_solns) == n_rpn
+
+        print(f"\n{cards}: {target} --- {n_rpn}")
+        print(f"  tree: {tree_solns[0].pprint_toplevel()}")
+        for rpn_soln in rpn_solns:
+            print(f"   rpn: {rpn_soln.pprint_toplevel()}")
+
+
 if __name__ == "__main__":
     cli()

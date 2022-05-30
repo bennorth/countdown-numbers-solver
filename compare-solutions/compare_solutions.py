@@ -192,7 +192,8 @@ def cli():
     pass
 
 
-if __name__ == "__main__":
+@cli.command(name="compare")
+def compare_solutions():
     n_done = 0
     while True:
         if n_done % 100 == 0:
@@ -203,3 +204,7 @@ if __name__ == "__main__":
         if cmp["tree_not_rpn"] or cmp["rpn_not_tree"]:
             print(cmp)
         n_done += 1
+
+
+if __name__ == "__main__":
+    cli()

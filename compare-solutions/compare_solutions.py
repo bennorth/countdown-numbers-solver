@@ -139,6 +139,13 @@ def all_solutions_from_cmd(cmd, target, cards):
     )
 
 
+def compare_all_solutions(target, cards):
+    return {
+        "tree": all_solutions_from_cmd("./tree-solve", target, cards),
+        "rpn": all_solutions_from_cmd("./rpn-solve", target, cards),
+    }
+
+
 def solutions_from_cmd(cmd, target, cards):
     return list(
         (tree

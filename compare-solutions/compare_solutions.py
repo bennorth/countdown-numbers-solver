@@ -247,5 +247,19 @@ def find_rpn_dups():
             print(f"   rpn: {rpn_soln.pprint_toplevel()}")
 
 
+@cli.command(name="show")
+@click.option("--cards", nargs=6, metavar="CARDS")
+@click.option("--target", required=True, metavar="TARGET")
+def show_solutions(cards, target):
+    tree_solns = all_solutions_from_cmd(
+        "./tree-solve",
+        target,
+        list(cards),
+    )
+    print(f"\n{cards}: {target} --- {len(tree_solns)}")
+    for tree_soln in tree_solns:
+        print(f"  tree: {tree_soln.pprint_toplevel()}")
+
+
 if __name__ == "__main__":
     cli()

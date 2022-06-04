@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <variant>
 #include <vector>
 
@@ -37,4 +38,18 @@ struct search_state
     instructions ops;
     longs eval_stack;
     longs unused_cards;
+
+    search_state(size_t n_int_args, char **int_args)
+    {
+        target = atol(int_args[0]);
+        std::transform(
+            int_args + 1, int_args + n_int_args,
+            std::back_inserter(unused_cards),
+            [](const char *x)
+            { return atol(x); });
+
+        size_t n_cards = unused_cards.size();
+        ops.reserve(2 * n_cards);
+        eval_stack.reserve(n_cards);
+    }
 };

@@ -73,5 +73,11 @@ struct search_state
     void search()
     {
         size_t n_eval_stack_elts = eval_stack.size();
+
+        if (n_eval_stack_elts == 1)
+        {
+            if (eval_stack[0] == target)
+                emit_ops();
+        }
     }
 };

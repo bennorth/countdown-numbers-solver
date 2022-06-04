@@ -123,5 +123,40 @@ struct search_state
             eval_stack_top = v2;
             eval_stack.push_back(v1);
         }
+
+        size_t n_unused_cards = unused_cards.size();
+        if (n_unused_cards > 0)
+        {
+            long last_card = unused_cards.back();
+            for (size_t i = 0; i < n_unused_cards; ++i)
+            {
+                long try_card = unused_cards[i];
+
+                bool already_tried = false;
+                for (size_t j = 0; j < i; ++j)
+                    if (unused_cards[j] == try_card)
+                    {
+                        already_tried = true;
+                        break;
+                    }
+
+                if (already_tried)
+                    continue;
+
+                ops.push_back(try_card);
+                eval_stack.push_back(try_card);
+
+                unused_cards[i] = last_card;
+                unused_cards.pop_back();
+
+                search();
+
+                unused_cards.push_back(last_card);
+                unused_cards[i] = try_card;
+
+                eval_stack.pop_back();
+                ops.pop_back();
+            }
+        }
     }
 };

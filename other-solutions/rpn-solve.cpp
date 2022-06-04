@@ -69,4 +69,9 @@ struct search_state
         }
         std::cout << " R\n";
     }
+
+    void search()
+    {
+        size_t n_eval_stack_elts = eval_stack.size();
+    }
 };

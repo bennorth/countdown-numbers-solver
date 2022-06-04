@@ -30,3 +30,11 @@ using longs = std::vector<long>;
 
 using instruction = std::variant<long, operation>;
 using instructions = std::vector<instruction>;
+
+struct search_state
+{
+    long target;
+    instructions ops;
+    longs eval_stack;
+    longs unused_cards;
+};

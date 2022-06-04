@@ -1,3 +1,4 @@
+#include <iostream>
 #include <algorithm>
 #include <variant>
 #include <vector>
@@ -51,5 +52,21 @@ struct search_state
         size_t n_cards = unused_cards.size();
         ops.reserve(2 * n_cards);
         eval_stack.reserve(n_cards);
+    }
+
+    void emit_ops()
+    {
+        bool first_output = true;
+        for (auto op : ops)
+        {
+            if (!first_output)
+                std::cout << " ";
+            if (const long *val = std::get_if<long>(&op))
+                std::cout << "V(" << *val << ")";
+            else
+                std::cout << op_as_text(std::get<operation>(op));
+            first_output = false;
+        }
+        std::cout << " R\n";
     }
 };

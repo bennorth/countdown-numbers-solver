@@ -79,5 +79,49 @@ struct search_state
             if (eval_stack[0] == target)
                 emit_ops();
         }
+
+        if (n_eval_stack_elts >= 2)
+        {
+            long v1 = eval_stack.back();
+            eval_stack.pop_back();
+            long v2 = eval_stack.back();
+            auto &eval_stack_top = eval_stack.back();
+
+            ops.push_back(operation::op_add); // placeholder
+            auto &op_stack_top = std::get<operation>(ops.back());
+
+            if (v1 >= v2)
+            {
+                op_stack_top = operation::op_add;
+                eval_stack_top = v1 + v2;
+                search();
+            }
+
+            if (v1 > v2)
+            {
+                op_stack_top = operation::op_subtract;
+                eval_stack_top = v1 - v2;
+                search();
+            }
+
+            if (v1 >= v2 && v2 > 1)
+            {
+                op_stack_top = operation::op_multiply;
+                eval_stack_top = v1 * v2;
+                search();
+            }
+
+            if (v2 > 1 && (v1 % v2) == 0)
+            {
+                op_stack_top = operation::op_divide;
+                eval_stack_top = v1 / v2;
+                search();
+            }
+
+            ops.pop_back();
+
+            eval_stack_top = v2;
+            eval_stack.push_back(v1);
+        }
     }
 };

@@ -1,3 +1,6 @@
+#include <variant>
+#include <vector>
+
 enum class operation
 {
     op_add,
@@ -22,3 +25,8 @@ const char *op_as_text(operation op)
         return "?????";
     }
 }
+
+using longs = std::vector<long>;
+
+using instruction = std::variant<long, operation>;
+using instructions = std::vector<instruction>;

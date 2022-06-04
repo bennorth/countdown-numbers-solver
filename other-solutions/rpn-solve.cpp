@@ -160,3 +160,16 @@ struct search_state
         }
     }
 };
+
+int main(int argc, char **argv)
+{
+    if (argc < 3)
+    {
+        std::cerr << "usage: rpn-solve TARGET CARD_1 ... CARD_N\n";
+        return EXIT_FAILURE;
+    }
+
+    search_state(argc - 1, argv + 1).search();
+
+    return EXIT_SUCCESS;
+}

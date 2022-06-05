@@ -271,7 +271,13 @@ def pprint_all_solutions(cmd, target, cards, output_tag):
 @cli.command(name="show")
 @click.option("--cards", nargs=6, type=int, metavar="CARDS")
 @click.option("--target", required=True, metavar="TARGET")
-def show_solutions(cards, target):
+@click.option(
+    "--solver",
+    type=click.Choice(["rpn", "tree", "both"]),
+    default="both",
+    help="which solver to run",
+)
+def show_solutions(cards, target, solver):
     tree_solns = all_solutions_from_cmd(
         "./tree-solve",
         target,

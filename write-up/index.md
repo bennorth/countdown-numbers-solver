@@ -1,6 +1,6 @@
 # Solving the Countdown numbers round
 
-[Ben North](https://github.com/bennorth), May 2022
+[Ben North](https://github.com/bennorth), June 2022
 
 <div id="countdown-solver">
   <div class="inputs">

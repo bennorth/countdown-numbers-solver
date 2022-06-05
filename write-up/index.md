@@ -113,7 +113,7 @@ this</span>):
 </figure>
 
 The question then is how to generate all *n*-ary trees with up to six
-leaf nodes.  Murtagh described a recursive solution to this problem,
+leaf nodes.  Murtagh describes a recursive solution to this problem,
 and gives the total number of such trees in the paper's *Table&nbsp;2*
 — there are 3020 of them.
 
@@ -146,21 +146,23 @@ expression such that all intermediate results are positive integers.
 
 ## Implementation
 
-For the implementation, I split the task after generating the *k*-node
-*n*-ary trees and choosing which *k* cards from 6 they applied to, and
-dumped representations of those trees as ‘programs’ for a stack-based
-machine.  The instructions this machine understands are “push card's
-value onto the stack” and “pop the top *N* values off the stack,
-combine them with *OP*, and push the result back on the stack”.  The
-operation *OP* can be addition or multiplication.  The program is then
-equivalent to the reverse Polish notation (postfix) representation of
-the expression.
+For the implementation, I split the task after generating the
+*k*-leaf-node *n*-ary trees and choosing which *k* cards from the
+complete set of six cards they applied to, and dumped representations
+of those trees as ‘programs’ for a stack-based machine.  The
+instructions this machine understands are “push card's value onto the
+stack” and “pop the top *N* values off the stack, combine them with
+*OP*, and push the result back on the stack”.  The operation *OP* can
+be addition or multiplication.  The program is then equivalent to the
+Reverse Polish Notation (postfix) representation of the expression.
 
 The exploration of the choices of which inputs to invert is deferred
 until evaluation time.  At the time the programs are generated, we
 don't know the values of the cards, so the program refers to `card[0]`
 up to `card[5]`, leaving the values to be filled in at evaluation
 time.
+
+For example:
 
 <figure>
   <img src="images/sample-indexed-tree-2.png">
@@ -187,9 +189,8 @@ care of allowing user input of the cards and target number, feeding
 these to the wasm part, and interpreting the valid solutions in a
 human-friendly way.
 
-The code is available on GitHub:
-
-* https://github.com/bennorth/countdown-numbers-solver/
+[The code is available on
+GitHub.](https://github.com/bennorth/countdown-numbers-solver/)
 
 
 ## Examples
@@ -200,9 +201,9 @@ YouTube has some examples of unusually difficult numbers rounds:
   <a href="https://youtu.be/pfa3MHLLSWI"><img src="images/Countdown-numbers-952.jpg"></a>
   <figcaption><p><a href="https://youtu.be/pfa3MHLLSWI">[YouTube]</a></p>
   <p>Make the target 952 from the cards 25, 50, 75, 100, 3, and 6.</p>
-  <p>The contestant found the solution ((75 × (100 + 6) × 3) − 50)
-    ÷ 25.  The tree-based solver finds this solution and also 25 + (75 ×
-    (100 + 3) × 6 ÷ 50).</p>
+  <p>The contestant — to much applause — found the solution ((75 ×
+    (100 + 6) × 3) − 50) ÷ 25.  The tree-based solver finds this
+    solution and also 25 + (75 × (100 + 3) × 6 ÷ 50).</p>
 </figcaption>
 </figure>
 
@@ -311,7 +312,7 @@ repeated numbers for the cards.  For example, for the problem
 
 (which [the DataGenetics blog
 reports](https://datagenetics.com/blog/august32014/index.html)
-involves the largest intermediate value (99,600) of any possible
+involves the largest intermediate value (99600) of any possible
 game), my solver gives the two essentially identical solutions
 
 * (((3 + 50) × 25) + 3) × 75 ÷ 100
@@ -323,9 +324,15 @@ In the real game, if the target cannot be reached, the winner is the
 person who can get closest to it.  The tree-based solver here does not
 produce anything if it can't get the target exactly.  It should.
 
+An exhaustive study of all possible numbers-round games is possible
+(and has been done by others).  This would provide a better validation
+than just comparing the behaviour on a few thousand randomly-chosen
+games.
+
 
 ## Source
 
-The code for the solver (and this write-up) is available on GitHub:
+The code for the tree-based solver (and this write-up) is available on
+GitHub:
 
 * https://github.com/bennorth/countdown-numbers-solver/

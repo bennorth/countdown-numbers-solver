@@ -278,14 +278,11 @@ def pprint_all_solutions(cmd, target, cards, output_tag):
 @click.option("--target", required=True, metavar="TARGET")
 @click.option("--cards", nargs=6, type=int, metavar="CARDS")
 def show_solutions(solver, target, cards):
-    tree_solns = all_solutions_from_cmd(
-        "./tree-solve",
-        target,
-        list(cards),
-    )
-    print(f"\n{cards}: {target} --- {len(tree_solns)}")
-    for tree_soln in tree_solns:
-        print(f"  tree: {tree_soln.pprint_toplevel()}")
+    print(f"\n{cards}: {target}\n")
+    if solver in ["tree", "both"]:
+        pprint_all_solutions("./tree-solve", target, cards, "tree")
+    if solver in ["rpn", "both"]:
+        pprint_all_solutions("./rpn-solve", target, cards, " rpn")
 
 
 if __name__ == "__main__":

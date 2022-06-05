@@ -1,5 +1,8 @@
 # Development set-up
 
+These instructions have not been thoroughly tested, but should work as
+a note-to-self if I ever come back to this.
+
 ## Generation of tree programs
 
 ``` bash

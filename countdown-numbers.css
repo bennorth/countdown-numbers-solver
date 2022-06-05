@@ -1,0 +1,127 @@
+.markdown-body {
+        box-sizing: border-box;
+        min-width: 200px;
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 45px;
+}
+
+@media (max-width: 767px) {
+    .markdown-body {
+        padding: 15px;
+    }
+}
+
+.markdown-body figure {
+    background-color: #eee;
+    text-align: center;
+    margin: 2rem 4rem;
+    padding: 2rem 0px 1rem;
+}
+
+.markdown-body figure img {
+    background-color: inherit;
+}
+
+.markdown-body figure figcaption {
+    margin-top: 1.5rem;
+    font-weight: bold;
+    font-size: 1.125rem;
+    padding: 0px 2rem;
+}
+
+.markdown-body figure figcaption.has-yt-link {
+    margin-top: 0px;
+}
+
+.markdown-body figure figcaption.has-yt-link p:first-child {
+    font-size: 80%;
+    font-style: italic;
+}
+
+.markdown-body span.as-inverted {
+    padding: 4px;
+    border: 4px solid #d55e00;
+    border-radius: 8px;
+}
+
+.markdown-body span.as-inverted.operand {
+    background-color: #a3d7f5;
+}
+
+.markdown-body span.as-inverted.mult-op {
+    background-color: #dda7c5;
+}
+
+#countdown-solver {
+    width: 34rem;
+    margin: 1rem auto;
+    border-top: 1rem solid #eee;
+    border-bottom: 1rem solid #eee;
+    background-color: #eee;
+    border-radius: 8px;
+}
+
+#countdown-solver .label {
+    margin: 0.5rem 0px;
+}
+
+#countdown-solver > .inputs,
+#countdown-solver > .inputs > .target {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#countdown-solver > .inputs > .cards {
+    display: flex;
+    flex-direction: row;
+}
+
+#countdown-solver > .inputs > .cards > input {
+    width: 2.5rem;
+    text-align: center;
+    margin: 0px 0.5rem;
+}
+
+#countdown-solver > .inputs > .target > input {
+    width: 3rem;
+    text-align: center;
+}
+
+#countdown-solver > .inputs > button {
+    margin: 1.25rem 0px;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #262;
+    color: white;
+    font-size: 1.125rem;
+    cursor: pointer;
+}
+
+#solve-results {
+    width: 28rem;
+    height: 16rem;
+    background-color: #efe;
+    margin: 1rem auto;
+    overflow-y: scroll;
+}
+
+
+#solve-results > p {
+    text-align: center;
+    margin: 0.125rem 0px;
+}
+
+#solve-results > p:first-child {
+    margin-top: 0.5rem;
+}
+
+#solve-results > p:last-child {
+    margin-bottom: 0.5rem;
+}
+
+#solve-results > p.placeholder {
+    font-style: italic;
+}

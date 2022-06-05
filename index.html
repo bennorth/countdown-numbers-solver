@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Finding solutions to the Countdown numbers round</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="./github-markdown.css" />
+  <link rel="stylesheet" href="./countdown-numbers.css" />
+</head>
+<body class="markdown-body">
+<h1 id="solving-the-countdown-numbers-round">Solving the Countdown numbers round</h1>
+<p><a href="https://github.com/bennorth">Ben North</a>, June 2022</p>
+<div id="countdown-solver">
+  <div class="inputs">
+    <span class="label">Cards:</span>
+    <div class="cards">
+      <input id="c0" type="text" value="100">
+      <input id="c1" type="text" value="7">
+      <input id="c2" type="text" value="5">
+      <input id="c3" type="text" value="3">
+      <input id="c4" type="text" value="2">
+      <input id="c5" type="text" value="1">
+    </div>
+    <div class="target">
+      <span class="label">Target:</span>
+      <input id="tgt" type="text" value="729">
+    </div>
+    <button id="solve">Solve!</button>
+  </div>
+  <div id="solve-results">
+  <p class="placeholder">Solutions will appear here.</p>
+  </div>
+</div>
+
+<h2 id="background">Background</h2>
+<p>On the TV gameshow Countdown, there’s a round where six number cards are chosen, along with a target number. Contestants have to use some or all of the six numbers to construct an arithmetic expression which evaluates to the target number, or as close as they can get to it. They’re only allowed the four basic operations (addition, subtraction, multiplication and division), and at all stages of evaluation, the result so far must be positive and integer.</p>
+<h2 id="motivation-for-this-project">Motivation for this project</h2>
+<p>There was some recent interest in this game in our house, and, while realising that I was not going to be the first person to think about this, I wanted to explore how you could write a computer solver.</p>
+<h2 id="my-approach">My approach</h2>
+<p>The approach I took was to try to construct a parse tree for the expression. Initially I thought a binary tree would be a good place to start, followed by a refinement pass to produce an <em>n</em>-ary tree, by collapsing, for example, “(3 + 4) + 5” into “3 + 4 + 5”. Also, the ordering of an operation node’s children is unimportant. I was hoping there would then be some way to throw out duplicate trees.</p>
+<p>After a bit more thought, though, it seemed cleaner to start directly with the generation of all possible <em>n</em>-ary trees. Some care is needed to be precise about what this means. The paper</p>
+<ul>
+<li><a href="https://core.ac.uk/download/pdf/82235912.pdf"><strong>Counting dendrograms: A survey</strong></a>, Fionn Murtagh, Discrete Applied Mathematics 7 (1984)</li>
+</ul>
+<p>is concerned with dendrograms, and gives a useful classification of the different ways of thinking about “all trees”. It talks about whether a tree is binary or general-<em>n</em>-ary, whether the leaf nodes are “labelled” or “unlabelled”, and whether the nodes are “ranked” or “unranked”. Our situation corresponds to what Murtagh calls "labelled, non-ranked, non-binary" trees.</p>
+<p>To enumerate the possible Countdown expressions without duplication, the operation (i.e., non-leaf) nodes have to alternate between “+” and “×” as you travel from the root to the leaves. The root operation node can be either kind. This example's root node (at the top of the diagram, since computer scientists draw their trees upside-down) is an addition operation:</p>
+<figure>
+  <img src="images/sample-add-mult-tree.png">
+  <figcaption>The expression “(5 × 3) + (7 × (100 + 2))” as a tree</figcaption>
+</figure>
+
+<p>Subtraction and division are handled by tagging each non-root node to say whether its value is used by its parent in a non-inverted or inverted sense. An inverted child of a “+” node is actually subtracted, and an inverted child of a “×” node is actually divided by. It is not permitted for all children of a node to be inverted.</p>
+<p>In this example, inverted number nodes are shown <span
+class="as-inverted operand">like this</span>:</p>
+<!-- Using https://davidmathlogic.com/colorblind/#%23000000-%23E69F00-%2356B4E9-%23009E73-%23F0E442-%230072B2-%23D55E00-%23CC79A7
+ for highlight colours in below.  Lightened a bit. -->
+
+<figure>
+  <img src="images/sample-add-mult-tree-with-inverses.png">
+  <figcaption>The expression “3 × ((100 × 5 ÷ 2) − 7)” as a tree — the
+    “7” is an inverted child of a “+” node and so is subtracted, and the
+    “2” is an inverted child of a “×” node and so is divided by.
+  </figcaption>
+</figure>
+
+<p>And another example, where a whole subexpression is inverted (its operator node is shown <span class="as-inverted mult-op">like this</span>):</p>
+<figure>
+  <img src="images/sample-add-mult-tree-with-inverses-2.png">
+
+  <figcaption>The expression “(7 × (100 + 5)) − (3 × 2)” as a tree —
+    the “3 × 2” sub-expression is an inverted child of a “+” node, and
+    so is subtracted
+  </figcaption>
+</figure>
+
+<p>The question then is how to generate all <em>n</em>-ary trees with up to six leaf nodes. Murtagh describes a recursive solution to this problem, and gives the total number of such trees in the paper's <em>Table 2</em> — there are 3020 of them.</p>
+<p>Given this large set of trees, we can generate all possible Countdown expressions with a few extra steps. For example, suppose we have a 4-leaf-node tree.</p>
+<p>We can choose the way the four leaf node labels correspond to four of the six number cards in 6-choose-4 = 15 ways.</p>
+<p>For each such choice, we can either assign the root node to be a “+” node or a “×” node.</p>
+<p>For each such choice, we alternate between “+” and “×” as we follow each path to a leaf node. With that done, we look at each operation (branch) node in turn. For each one, we list all proper subsets of the set of that node’s children. Then we loop over the Cartesian product of choices of subsets for all operation nodes.</p>
+<p>For each operation node and its chosen subset of children, we mark that subset of that node’s children as “inverted” and the rest of its children as “non-inverted”. The requirement that we choose a <em>proper</em> subset ensures we satisfy the rule that we can’t have an operation node all of whose children are inverted.</p>
+<p>Finally we can evaluate the expression and test whether the result matches the target. We also check that it is possible to evaluate the expression such that all intermediate results are positive integers.</p>
+<h2 id="implementation">Implementation</h2>
+<p>For the implementation, I split the task after generating the <em>k</em>-leaf-node <em>n</em>-ary trees and choosing which <em>k</em> cards from the complete set of six cards they applied to, and dumped representations of those trees as ‘programs’ for a stack-based machine. The instructions this machine understands are “push card's value onto the stack” and “pop the top <em>N</em> values off the stack, combine them with <em>OP</em>, and push the result back on the stack”. The operation <em>OP</em> can be addition or multiplication. The program is then equivalent to the Reverse Polish Notation (postfix) representation of the expression.</p>
+<p>The exploration of the choices of which inputs to invert is deferred until evaluation time. At the time the programs are generated, we don't know the values of the cards, so the program refers to <code>card[0]</code> up to <code>card[5]</code>, leaving the values to be filled in at evaluation time.</p>
+<p>For example:</p>
+<figure>
+  <img src="images/sample-indexed-tree-2.png">
+  <figcaption>An expression template; its program is C5 C0 C2 C4 M3 C1 A2 M2</figcaption>
+</figure>
+
+<p>That part was done in Python, and resulted in 4659 programs. These programs are hard-coded into a separate C++ program, which interprets them as program templates. It pre-processes the list by copying and then swapping “+” with “×” in the copies. It executes the double-size list of programs by following all the different execution paths arising from the different choices of what subset of each node's children to invert. To ensure we can keep to the rules about always having positive integer intermediate results, it processes all non-inverted arguments before any inverted ones. If the result of any operation fails to be a positive integer, we abandon that execution branch. We also abandon a branch if it involves multiplying by 1. Multiplying by 1 is not strictly against the rules, but it seems cleaner to exclude those solutions.</p>
+<p>To wrap this in something suitable for demonstration on the web, I compiled the C++ into wasm using emscripten. A bare JS program takes care of allowing user input of the cards and target number, feeding these to the wasm part, and interpreting the valid solutions in a human-friendly way.</p>
+<p><a href="https://github.com/bennorth/countdown-numbers-solver/">The code is available on GitHub.</a></p>
+<h2 id="examples">Examples</h2>
+<p>YouTube has some examples of unusually difficult numbers rounds:</p>
+<figure>
+  <a href="https://youtu.be/pfa3MHLLSWI"><img src="images/Countdown-numbers-952.jpg"></a>
+  <figcaption class="has-yt-link"><p><a href="https://youtu.be/pfa3MHLLSWI">[YouTube]</a></p>
+  <p>Make the target 952 from the cards 25, 50, 75, 100, 3, and 6.</p>
+  <p>The contestant — to much applause — found the solution ((75 ×
+    (100 + 6) × 3) − 50) ÷ 25.  The tree-based solver finds this
+    solution and also 25 + (75 × (100 + 3) × 6 ÷ 50).</p>
+</figcaption>
+</figure>
+
+<figure>
+  <a href="https://youtu.be/_JQYYz92-Uk"><img src="images/Countdown-numbers-813.jpg"></a>
+  <figcaption class="has-yt-link"><p class="yt-link"><a href="https://youtu.be/_JQYYz92-Uk">[YouTube]</a></p>
+  <p>Make the target 813 from the cards 25, 50, 75, 100, 1, and 10.</p>
+  <p>The contestant found the solution ((25 × (75 − 10)) + 1) × 50 ÷ 100, which the
+    tree-based solver also finds.</p>
+</figcaption>
+</figure>
+
+<h2 id="other-solvers">Other solvers</h2>
+<p>I deliberately didn’t look for details of how other solvers worked before doing this. Doing so afterwards, I found that almost everyone else has taken the approach of exploring all valid Reverse Polish Notation (postfix) expressions; for example, <a href="https://www.daitx.com/2016/05/01/countdown-math/">this nice analysis by Henriqiue Daitx</a>, and <a href="https://github.com/rvedotrc/numbers">this C implementation by Rachel Evans</a>.</p>
+<p><a href="https://youtu.be/cVMhkqPP2YI">Brute Forcing The Countdown Numbers Game — Computerphile</a> also uses generation of RPN programs. A comment says "The first thing that sprang to mind was a tree-based approach" but didn't elaborate, and replies didn't describe what I did in this project.</p>
+<p>Some of these analyses note that there are ways to cut down the search space, which also reduces duplication in the emitted solutions. For example, <a href="https://www.ttested.com/polish-countdown/">Tim Hargreaves points out</a> that we need not look at solutions where addition or multiplication expressions have their operands in non-ascending order; Evans's solver also uses this observation.</p>
+<p><a href="https://github.com/llewelld/countdown">A solver by David Llewellyn-Jones</a> does take a tree-based approach, using binary trees where all four operators can appear as the non-leaf nodes.</p>
+<p><a href="http://happysoft.org.uk/countdown/numgame.php">HappySoft's Countdown Numbers game</a> ranks highly in web search results. It handles the case where the target number can not be reached exactly; but it does sometimes miss solutions. For example, it produces an expression giving 950 for the first example above. Its solver is server-side so we can't tell what approach it takes.</p>
+<h2 id="validating-my-solver">Validating my solver</h2>
+<p>To check my solver, I wrote a Python program which repeatedly runs both my solver and one based on <a href="https://github.com/rvedotrc/numbers">Evans's RPN-based one</a>, and compares their solutions. Some care is needed to come up with a canonical representation of a given solution, to know when two solutions, different on the surface, are really “the same”.</p>
+<p>Results of this comparison over many thousands of random problems were that all solutions found by my approach were also found by the RPN-based solver, and vice versa. Runtime was pretty similar too. Of the two approaches, the RPN one has the advantage of more obviously being correct in terms of not missing solutions, so it was reassuring that the solution sets matched in all the trials I ran.</p>
+<p>The RPN solution did tend to produce duplicate solutions, though. As a cherry-picked example, the problem</p>
+<ul>
+<li>Cards: 50, 6, 75, 100, 10, 8</li>
+<li>Target: 899</li>
+</ul>
+<p>when analysed by my solver, has the unique solution</p>
+<ul>
+<li>75 + ((100 + 10) × 8) − 50 − 6</li>
+</ul>
+<p>On the other hand, the RPN solver produces the following 15 solutions:</p>
+<ul>
+<li>((75 − 6) − 50) + (8 × (10 + 100))</li>
+<li>((75 − 6) + (8 × (10 + 100))) − 50</li>
+<li>((75 + (8 × (10 + 100))) − 6) − 50</li>
+<li>(75 − 50) + ((8 × (10 + 100)) − 6)</li>
+<li>(75 + ((8 × (10 + 100)) − 6)) − 50</li>
+<li>(75 − (6 + 50)) + (8 × (10 + 100))</li>
+<li>(75 + (8 × (10 + 100))) − (6 + 50)</li>
+<li>((75 − 50) − 6) + (8 × (10 + 100))</li>
+<li>((75 − 50) + (8 × (10 + 100))) − 6</li>
+<li>((75 + (8 × (10 + 100))) − 50) − 6</li>
+<li>(75 − 6) + ((8 × (10 + 100)) − 50)</li>
+<li>(75 + ((8 × (10 + 100)) − 50)) − 6</li>
+<li>75 + (((8 × (10 + 100)) − 6) − 50)</li>
+<li>75 + ((8 × (10 + 100)) − (6 + 50))</li>
+<li>75 + (((8 × (10 + 100)) − 50) − 6)</li>
+</ul>
+<p>which are all essentially the same.</p>
+<h2 id="future-work">Future work</h2>
+<p>It’s possible to have two cards with the same number. The tree-based solver described here can produce duplicated solutions if given repeated numbers for the cards. For example, for the problem</p>
+<ul>
+<li>Cards: 3, 3, 25, 50, 75, 100</li>
+<li>Target: 996</li>
+</ul>
+<p>(which <a href="https://datagenetics.com/blog/august32014/index.html">the DataGenetics blog reports</a> involves the largest intermediate value (99600) of any possible game), my solver gives the two essentially identical solutions</p>
+<ul>
+<li>(((3 + 50) × 25) + 3) × 75 ÷ 100</li>
+<li>(3 + ((3 + 50) × 25)) × 75 ÷ 100</li>
+</ul>
+<p>It shouldn't do this.</p>
+<p>In the real game, if the target cannot be reached, the winner is the person who can get closest to it. The tree-based solver here does not produce anything if it can't get the target exactly. It should.</p>
+<p>An exhaustive study of all possible numbers-round games is possible (and has been done by others). This would provide a better validation than just comparing the behaviour on a few thousand randomly-chosen games.</p>
+<h2 id="source">Source</h2>
+<p>The code for the tree-based solver (and this write-up) is available on GitHub:</p>
+<ul>
+<li><a href="https://github.com/bennorth/countdown-numbers-solver/">https://github.com/bennorth/countdown-numbers-solver/</a></li>
+</ul>
+<script src="CountdownSolver.js"></script>
+<script src="countdown-numbers.js"></script>
+</body>
+</html>

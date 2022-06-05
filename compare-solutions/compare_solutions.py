@@ -269,7 +269,7 @@ def pprint_all_solutions(cmd, target, cards, output_tag):
 
 
 @cli.command(name="show")
-@click.option("--cards", nargs=6, metavar="CARDS")
+@click.option("--cards", nargs=6, type=int, metavar="CARDS")
 @click.option("--target", required=True, metavar="TARGET")
 def show_solutions(cards, target):
     tree_solns = all_solutions_from_cmd(

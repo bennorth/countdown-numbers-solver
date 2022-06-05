@@ -199,7 +199,7 @@ YouTube has some examples of unusually difficult numbers rounds:
 
 <figure>
   <a href="https://youtu.be/pfa3MHLLSWI"><img src="images/Countdown-numbers-952.jpg"></a>
-  <figcaption><p><a href="https://youtu.be/pfa3MHLLSWI">[YouTube]</a></p>
+  <figcaption class="has-yt-link"><p><a href="https://youtu.be/pfa3MHLLSWI">[YouTube]</a></p>
   <p>Make the target 952 from the cards 25, 50, 75, 100, 3, and 6.</p>
   <p>The contestant — to much applause — found the solution ((75 ×
     (100 + 6) × 3) − 50) ÷ 25.  The tree-based solver finds this
@@ -209,7 +209,7 @@ YouTube has some examples of unusually difficult numbers rounds:
 
 <figure>
   <a href="https://youtu.be/_JQYYz92-Uk"><img src="images/Countdown-numbers-813.jpg"></a>
-  <figcaption><p><a href="https://youtu.be/_JQYYz92-Uk">[YouTube]</a></p>
+  <figcaption class="has-yt-link"><p class="yt-link"><a href="https://youtu.be/_JQYYz92-Uk">[YouTube]</a></p>
   <p>Make the target 813 from the cards 25, 50, 75, 100, 1, and 10.</p>
   <p>The contestant found the solution ((25 × (75 − 10)) + 1) × 50 ÷ 100, which the
     tree-based solver also finds.</p>

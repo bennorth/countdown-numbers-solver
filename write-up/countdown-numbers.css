@@ -30,6 +30,15 @@
     padding: 0px 2rem;
 }
 
+.markdown-body figure figcaption.has-yt-link {
+    margin-top: 0px;
+}
+
+.markdown-body figure figcaption.has-yt-link p:first-child {
+    font-size: 80%;
+    font-style: italic;
+}
+
 .markdown-body span.as-inverted {
     padding: 4px;
     border: 4px solid #d55e00;

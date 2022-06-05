@@ -258,20 +258,21 @@ takes.
 ## Validating my solver
 
 To check my solver, I wrote a Python program which repeatedly runs
-both my solver and [Evans's RPN-based
+both my solver and one based on [Evans's RPN-based
 one](https://github.com/rvedotrc/numbers), and compares their
 solutions.  Some care is needed to come up with a canonical
 representation of a given solution, to know when two solutions,
 different on the surface, are really “the same”.
 
 Results of this comparison over many thousands of random problems were
-that all solutions found by my approach were also found by Evans's,
-and vice versa.  Runtime was pretty similar too.  Of the two
-approaches, Evans's RPN one has the advantage of more obviously being
-correct in terms of not missing solutions, so it was reassuring that
-the solution sets matched in all the trials I ran.  The RPN solution
-did tend to produce duplicate solutions, though.  As a cherry-picked
-example, the problem
+that all solutions found by my approach were also found by the
+RPN-based solver, and vice versa.  Runtime was pretty similar too.  Of
+the two approaches, the RPN one has the advantage of more obviously
+being correct in terms of not missing solutions, so it was reassuring
+that the solution sets matched in all the trials I ran.
+
+The RPN solution did tend to produce duplicate solutions, though.  As
+a cherry-picked example, the problem
 
 * Cards: 50, 6, 75, 100, 10, 8
 * Target: 899

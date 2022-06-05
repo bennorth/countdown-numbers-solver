@@ -105,3 +105,8 @@ Then:
   system, available at `http://localhost:8211` (which occasionally
   seems flaky), or
 * `(cd write-up; ./make.sh)` to do a one-shot build.
+
+### Publishing
+
+Run the build, copy all contents of `write-up/dist/` to the
+`github-pages` branch at the root, commit, and push to GitHub.

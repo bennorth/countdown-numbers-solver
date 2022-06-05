@@ -242,24 +242,23 @@ def find_rpn_dups():
 
         # A bit wasteful to re-do these but never mind:
 
-        tree_solns = all_solutions_from_cmd(
+        print(f"\n{cards}: {target} --- {n_rpn}")
+
+        tree_solns = pprint_all_solutions(
             "./tree-solve",
             target,
             cards,
+            "tree"
         )
         assert len(tree_solns) == 1
 
-        rpn_solns = all_solutions_from_cmd(
+        rpn_solns = pprint_all_solutions(
             "./rpn-solve",
             target,
             cards,
+            " rpn"
         )
         assert len(rpn_solns) == n_rpn
-
-        print(f"\n{cards}: {target} --- {n_rpn}")
-        print(f"  tree: {tree_solns[0].pprint_toplevel()}")
-        for rpn_soln in rpn_solns:
-            print(f"   rpn: {rpn_soln.pprint_toplevel()}")
 
 
 def pprint_all_solutions(cmd, target, cards, output_tag):

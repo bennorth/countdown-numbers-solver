@@ -262,6 +262,13 @@ def find_rpn_dups():
             print(f"   rpn: {rpn_soln.pprint_toplevel()}")
 
 
+def pprint_all_solutions(cmd, target, cards, output_tag):
+    solns = all_solutions_from_cmd(cmd, target, list(cards))
+    for soln in solns:
+        print(f"  {output_tag}: {soln.pprint_toplevel()}")
+    return solns
+
+
 @cli.command(name="show")
 @click.option("--cards", nargs=6, metavar="CARDS")
 @click.option("--target", required=True, metavar="TARGET")
